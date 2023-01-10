@@ -1,6 +1,7 @@
 import React from 'react'
 import "../Styles.css"
 import ProfilePic from "../assets/react.svg"
+import { Link } from "react-router-dom"
 
 function SideMenu() {
     return (
@@ -13,9 +14,9 @@ function SideMenu() {
                     <h1 className='profile__title'>Admin</h1>
                 </div>
                 <ul className='side-menu__links'>
-                    <li><a className='side-menu__link' href="#">Dashboard</a></li>
-                    <li><a className='side-menu__link' href="#">Admission</a></li>
-                    <li><a className='side-menu__link' href="#">Enlistment</a></li>
+                    <li><Link className='side-menu__link' to="/">Dashboard</Link></li>
+                    <li><Link className='side-menu__link' to="/admission">Admission</Link></li>
+                    <li><Link className='side-menu__link' to="/enlistment">Enlistment</Link></li>
                     <li><a className='side-menu__link' href="#">Logout</a></li>
                 </ul>
             </div>

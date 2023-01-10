@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Menu */
+
+
+
+#menu__container {
+    display: flex;
+}
+
+.page__container {
+    border: 2px solid black;
+    width: 100%;
+}
+
+.side-menu__container {
+    width: 100%;
+    max-width: 240px;
+    background-color: #C21010;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu__wrapper {
+    margin: 0 20px;
+}
+
+/* Profile */
+
+.profile__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0 24px 0;
+}
+
+.profile {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 12px;
+}
+
+.profile__img {
+    width: 100%;
+}
+
+.profile__title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #FFFDE3;
+}
+
+/* side-menu */
+
+.side-menu__links {
+    list-style-type: none;
+}
+
+.side-menu__link {
+    color: white;
+    font-size: 32px;
+    text-decoration: none;
+    margin-bottom: 16px;
+    width: 100%;
+    display: inline-block;
+    padding: 8px;
+    transition: all 450ms ease;
+}
+
+.side-menu__link:hover {
+    transform: scale(1.1);
+    background-color: #E64848;
+    border-radius: 5px;
+}

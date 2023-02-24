@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom"
 import SideMenu from "./components/SideMenu"
 import Dashboard from "./pages/Dashboard"
 import Admission from './pages/Admission'
-import Enlistment from './pages/Enlistment'
+import Student from './pages/Student'
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/admission' element={<Admission />} />
-        <Route path='/enlistment' element={<Enlistment />} />
+        <Route path='/enlistment' element={<Student />} />
       </Routes>
     </div>
   )

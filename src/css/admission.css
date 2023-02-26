@@ -69,3 +69,201 @@
 .student__chooser:hover {
     opacity: 0.8;
 }
+
+
+.student__type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.admission__type, .enrollment_status, .programs, .semestral {
+    display: flex;
+    flex-direction: column;
+}
+
+    .admission__type label, .enrollment_status label, .programs label, .semestral label {
+        margin-bottom: 12px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .admission__type select, .enrollment_status select, .programs select, .semestral select {
+        padding: 4px 12px;
+    }
+
+
+.student__more {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 24px;
+}
+
+
+.student__label {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+    .student__input {
+        padding: 4px 12px;
+        margin-left: 12px;
+    }
+
+
+.student__select {
+    display: flex;
+    flex-direction: column;
+}
+
+    .student__select label{
+        font-weight: bold;
+        margin-bottom: 12px;
+        font-size: 18px;
+
+    }
+
+    .student__select select {
+        padding: 4px 12px;
+    }
+
+
+.personal__details {
+    margin-top: 24px;
+}
+
+.details__title {
+    font-size: 24px;
+}
+
+.fullname {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.student__label--column {
+    display: flex;
+    flex-direction: column;
+}
+
+    .student__label--column input {
+        padding: 4px 12px;
+    }
+
+.student__info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+
+.two__details {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 24px;
+}
+
+
+.four__details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 24px;
+    
+}
+
+.three__details {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.three_details--column {
+    display: flex;
+    flex-direction: column;
+    margin-top: 18px;
+}
+
+.long__input {
+    margin: 18px 40px;
+    padding: 4px 12px;
+}
+
+.bottom__label--center {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.student__info--center {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+.current__address {
+    margin-top: 24px;
+}
+
+.with__cb {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+    .with__cb h3 {
+        margin: 8px 8px;
+    }
+
+.parents {
+    margin-top: 24px;
+}
+
+.not__two--details--column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.parent__input {
+    width: 600px;
+    padding: 4px 12px;
+}
+
+.parent__label {
+    font-size: 18px;
+}
+
+.label--bold {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.guardian {
+    margin-top: 18px;
+}
+
+.red__btn--right {
+    float: right;
+    margin: 24px 0;
+    padding: 12px 36px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    background-color: red;
+    border-radius: 10px;
+}
+
+.red__btn--right:hover {
+    opacity: .7;
+}

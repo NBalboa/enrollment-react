@@ -60,6 +60,7 @@ tbody td {
     padding: 4px;
     text-decoration: none;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .see__profile {

@@ -4,11 +4,12 @@ import Header from '../components/Header'
 import axios from 'axios'
 import "../Styles.css"
 import "../css/student.css"
+import Students from '../components/Students'
 
 function Student() {
-
-    const [search, setSearch] = useState("");
     const [searchBy, setSearchBy] = useState("ID");
+    const [studentID, setStudentID] = useState("");
+    const [name, setName] = useState();
     const [data, setData] = useState([]);
 
     const handleData = async function() {
@@ -21,24 +22,39 @@ function Student() {
 
 
 
-    useEffect(() => {
-        handleData();
-    }, [])
 
-    if(!search) {
-        console.log("Show all")
-    }
 
-    const handleSearch = (e) => {
-        setSearch(e.target.value);
-
-        if(!search){
-            console.log("Show all")
+    const handleSearch = async (e) => {
+        let checkLength = e.target.value;
+        if(checkLength.length <= 1) {
+            setName("");
+            setStudentID("");
         }
         else{
-            console.log("Show specific data")
+            if (searchBy == "ID") {
+                setStudentID(e.target.value);
+                setName("");
+            } else {
+                setName(e.target.value);
+                setStudentID("");
+            }
         }
-        console.log(searchBy);
+        
+
+        const search = {
+            student_id: studentID,
+            name: name
+        }
+
+        const {data} = await axios.post("http://localhost:3000/api/admission/search", search, {responseType: "json"})
+        if(data.result.length > 0) {
+            setData(data.result)
+            console.log(data.result)
+        }
+        else{
+            setData(data.result);
+            console.log("Student Not Found")
+        }
     }
 
     const handleDelete = async function (id) {
@@ -48,6 +64,10 @@ function Student() {
         console.log(data);
         handleData();
     };
+
+    useEffect(() => {
+        handleData();
+    }, []);
 
 
     return (
@@ -84,22 +104,7 @@ function Student() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map(student => 
-                                        <tr className='student__row'>
-                                            <td className='student_cell'>{student.student_id}</td>
-                                            <td className='student_cell'>{student.last_name}, {student.first_name} {student.middle_name[0]}</td>
-                                            <td className='student_cell'>{student.enrollment_status}</td>
-                                            <td className='student_cell'>{student.type_of_admission}</td>
-                                            <td className='student_cell'>{student.program}</td>
-                                             <td className='student__cell'>
-                                                <ul className='student__action'>
-                                                    <li><a href='#' className='see__profile'>See Profile</a></li>
-                                                    <li><a href='#' className='update__profile'>Update Profile</a></li>
-                                                    <li><a type='button' onClick={ () => handleDelete(student.id) } className='delete__student'>Delete Student</a></li>
-                                                </ul>
-                                            </td>
-
-                                        </tr>)}
+                                        {data.map(student => <Students key={student.id} data={student} onDelete={handleDelete}/>)}
                                     </tbody>
                                 </table>
                             </div>

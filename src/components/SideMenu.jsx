@@ -16,7 +16,7 @@ function SideMenu() {
                 <ul className='side-menu__links'>
                     <li><Link className='side-menu__link' to="/">Dashboard</Link></li>
                     <li><Link className='side-menu__link' to="/admission">Admission</Link></li>
-                    <li><Link className='side-menu__link' to="/enlistment">Student</Link></li>
+                    <li><Link className='side-menu__link' to="/students">Student</Link></li>
                     <li><Link className='side-menu__link' to="#">Menu</Link></li>
                     <li><a className='side-menu__link' href="#">Logout</a></li>
                 </ul>

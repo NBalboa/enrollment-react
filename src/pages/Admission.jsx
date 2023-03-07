@@ -15,7 +15,7 @@ function Admission() {
     const [program, setProgram] = useState("Bachelor of Science in Computer Science");
     const [semester, setSemester] = useState("1st Semester");
     const [studID, setStudID] = useState("");
-    const [yearLevel, setYearLevel] = useState("2nd");
+    const [yearLevel, setYearLevel] = useState("1st");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -168,8 +168,8 @@ function Admission() {
                           value={admissionType}
                           onChange={(e) => setAdmissionType(e.target.value)}
                         >
-                          <option>Regular</option>
-                          <option>Irregular</option>
+                          <option value="Regular">Regular</option>
+                          <option value="Irregular">Irregular</option>
                         </select>
                       </div>
                       <div className="enrollment_status">
@@ -190,11 +190,15 @@ function Admission() {
                           value={program}
                           onChange={(e) => setProgram(e.target.value)}
                         >
-                          <option>
+                          <option value="Bachelor of Science in Computer Science">
                             Bachelor of Science in Computer Science
                           </option>
-                          <option>Bachelor of Science in Social Work</option>
-                          <option>Bachelor of Science in Criminology</option>
+                          <option value="Bachelor of Science in Social Work">
+                            Bachelor of Science in Social Work
+                          </option>
+                          <option value="Bachelor of Science in Criminology">
+                            Bachelor of Science in Criminology
+                          </option>
                         </select>
                       </div>
                       <div className="semestral">
@@ -204,8 +208,8 @@ function Admission() {
                           value={semester}
                           onChange={(e) => setSemester(e.target.value)}
                         >
-                          <option>1st Semester</option>
-                          <option>2nd Semester</option>
+                          <option value='1st Semester'>1st Semester</option>
+                          <option value='2nd Semester'>2nd Semester</option>
                         </select>
                       </div>
                     </div>
@@ -225,10 +229,10 @@ function Admission() {
                           value={yearLevel}
                           onChange={(e) => setYearLevel(e.target.value)}
                         >
-                          <option>1st</option>
-                          <option>2nd</option>
-                          <option>3rd</option>
-                          <option>4th</option>
+                          <option value='1st'>1st</option>
+                          <option value='2nd'>2nd</option>
+                          <option value='3rd'>3rd</option>
+                          <option value='4th'>4th</option>
                         </select>
                       </div>
                     </div>
@@ -270,8 +274,8 @@ function Admission() {
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                           >
-                            <option>Male</option>
-                            <option>Female</option>
+                            <option value='Male'>Male</option>
+                            <option value='Female'>Female</option>
                           </select>
                         </div>
                         <div className="student__label--column">
@@ -396,19 +400,34 @@ function Admission() {
                         </div>
                         <div className="three__details">
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={cZipCode} onChange={(e) => setCZipCode(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={cZipCode}
+                              onChange={(e) => setCZipCode(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Zip Code
                             </label>
                           </div>
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={cPhone} onChange={(e) => setCPhone(e.target.value)} />
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={cPhone}
+                              onChange={(e) => setCPhone(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Mobile Phone No.
                             </label>
                           </div>
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={cTelPhone} onChange={(e) => setCTelPhone(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={cTelPhone}
+                              onChange={(e) => setCTelPhone(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Telephone No.
                             </label>
@@ -468,19 +487,34 @@ function Admission() {
                         </div>
                         <div className="three__details">
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={pZipCode} onChange={(e) => setPZipCode(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pZipCode}
+                              onChange={(e) => setPZipCode(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Zip Code
                             </label>
                           </div>
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={pPhone} onChange={(e) => setPPhone(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pPhone}
+                              onChange={(e) => setPPhone(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Mobile Phone No.
                             </label>
                           </div>
                           <div className="student__label--column">
-                            <input type="text" placeholder='ex. "Dela Cruz"' value={pTelPhone} onChange={(e) => setPTelPhone(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pTelPhone}
+                              onChange={(e) => setPTelPhone(e.target.value)}
+                            />
                             <label className="student__info--center">
                               Telephone No.
                             </label>
@@ -495,33 +529,63 @@ function Admission() {
                           <label className="parent__label label--bold">
                             Father's Name
                           </label>
-                          <input type="text" className="parent__input" value={fatherName} onChange={(e) => setFatherName(e.target.value)}/>
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={fatherName}
+                            onChange={(e) => setFatherName(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">
                             Educational Attainement
                           </label>
-                          <input type="text" className="parent__input" value={fatherEdu} onChange={(e) => setFatherEdu(e.target.value)}/>
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={fatherEdu}
+                            onChange={(e) => setFatherEdu(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">Occupation</label>
-                          <input type="text" className="parent__input" value={fatherWork} onChange={(e) => setFatherWork(e.target.value)}/>
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={fatherWork}
+                            onChange={(e) => setFatherWork(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label label--bold">
                             Mother's Name
                           </label>
-                          <input type="text" className="parent__input" value={motherName} onChange={(e) => setMotherName(e.target.value)} />
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={motherName}
+                            onChange={(e) => setMotherName(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">
                             Education Attainment
                           </label>
-                          <input type="text" className="parent__input" value={motherEdu} onChange={(e) => setMotherEdu(e.target.value)} />
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={motherEdu}
+                            onChange={(e) => setMotherEdu(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">Occupation</label>
-                          <input type="text" className="parent__input" value={motherWork} onChange={(e) => setMotherWork(e.target.value)} />
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={motherWork}
+                            onChange={(e) => setMotherWork(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -532,21 +596,43 @@ function Admission() {
                           <label className="parent__label label--bold">
                             Guardian's Name
                           </label>
-                          <input type="text" className="parent__input" value={guardianName} onChange={(e) => setGuardianName(e.target.value)} />
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={guardianName}
+                            onChange={(e) => setGuardianName(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">Relationship</label>
-                          <input type="text" className="parent__input" value={guardianRelationship} onChange={(e) => setGuardianRelationship(e.target.value)}/>
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={guardianRelationship}
+                            onChange={(e) =>
+                              setGuardianRelationship(e.target.value)
+                            }
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">Address</label>
-                          <input type="text" className="parent__input" value={guardianAddress} onChange={(e) => setGuardianAddress(e.target.value)} />
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={guardianAddress}
+                            onChange={(e) => setGuardianAddress(e.target.value)}
+                          />
                         </div>
                         <div className="not__two--details--column">
                           <label className="parent__label">
                             Mobile No./Telephone No.
                           </label>
-                          <input type="text" className="parent__input" value={guardianContact} onChange={(e) => setGuardianContact(e.target.value)}/>
+                          <input
+                            type="text"
+                            className="parent__input"
+                            value={guardianContact}
+                            onChange={(e) => setGuardianContact(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>

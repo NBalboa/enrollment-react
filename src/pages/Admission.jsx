@@ -109,6 +109,7 @@ function Admission() {
       formData.append("g_relationship", guardianRelationship);
       formData.append("g_address", guardianAddress);
       formData.append("g_mobile", guardianContact);
+      formData.append("sy", sy);
 
       fetch("http://localhost:3000/api/admission/admit", {
         method: "POST",

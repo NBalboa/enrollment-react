@@ -5,6 +5,8 @@ import SideMenu from "./components/SideMenu"
 import Dashboard from "./pages/Dashboard"
 import Admission from './pages/Admission'
 import Student from './pages/Student'
+import UpdateForm from './pages/UpdateForm'
+import StudentProfile from './pages/StudentProfile'
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
         <Route path='/' element={<Dashboard />} />
         <Route path='/admission' element={<Admission />} />
         <Route path='/students' element={<Student />} />
+        <Route path='/update/:id' element={<UpdateForm/>} />
+        <Route path='/student/:id' element={<StudentProfile/>} />
       </Routes>
     </div>
   )

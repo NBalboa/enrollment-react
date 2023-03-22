@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 function Students({data, onDelete}) {
@@ -11,8 +12,8 @@ function Students({data, onDelete}) {
             <td className='student_cell'>{data.program}</td>
                 <td className='student__cell'>
                 <ul className='student__action'>
-                    <li><a href='#' className='see__profile'>See Profile</a></li>
-                    <li><a href='#' className='update__profile'>Update Profile</a></li>
+                    <li><Link to={`/student/${data.id}`} className='see__profile'>See Profile</Link></li>
+                    <li><Link to={`/update/${data.id}`} className='update__profile'>Update Profile</Link></li>
                     <li><a type='button' onClick={ () => onDelete(data.id) } className='delete__student'>Delete Student</a></li>
                 </ul>
             </td>

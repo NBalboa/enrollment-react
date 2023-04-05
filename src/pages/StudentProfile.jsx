@@ -50,6 +50,7 @@ function StudentProfile() {
       const [guardianRelationship, setGuardianRelationship] = useState("");
       const [guardianAddress, setGuardianAddress] = useState("");
       const [guardianContact, setGuardianContact] = useState("");
+      const [address, setAddress] = useState("");
   
   const {id} = useParams();
 
@@ -63,6 +64,57 @@ function StudentProfile() {
     setFirstName(student.first_name);
     setLastName(student.last_name);
     setMiddleName(student.middle_name);
+    setProgram(student.program);
+    setAddress(`${student.current_street}, ${student.current_barangay}, ${student.current_province}`)
+    setFirstName(student.first_name);
+    setLastName(student.last_name);
+    setMiddleName(student.middle_name);
+    setGender(student.gender);
+    setNationality(student.nationality)
+    let convertedDob = new Date(student.dob)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
+    setDob(convertedDob.split(" ")[0]);
+    setPob(student.pob);
+    setCivilStatus(student.civil_status);
+    setReligion(student.religion);
+    setTribe(student.tribe);
+    setDisability(student.disability);
+    setScholarship(student.scholarship);
+
+    setCStreet(student.current_street);
+    setCBarangay(student.current_barangay);
+    setCProvince(student.current_province);
+    setCZipCode(student.current_zipcode);
+    setCPhone(student.current_phone);
+    setCTelPhone(student.current_telphone);
+
+    setPStreet(student.current_street);
+    setPBarangay(student.current_barangay);
+    setPProvince(student.current_province);
+    setPZipCode(student.current_zipcode);
+    setPPhone(student.current_phone);
+    setPTelPhone(student.current_telphone);
+
+    setFatherName(student.f_fullname)
+    setFatherEdu(student.f_edu)
+    setFatherWork(student.f_occ)
+
+    setMotherName(student.m_fullname);
+    setMotherEdu(student.m_edu);
+    setMotherWork(student.m_occ);
+
+
+    setGuardianName(student.g_fullname);
+    setGuardianRelationship(student.g_relationship);
+    setGuardianAddress(student.g_address);
+    setGuardianContact(student.g_contact);
+
+    // setDob(student.dob);
+    // console.log(dob)
+    
     console.log(data[0]);
   }
 
@@ -117,9 +169,9 @@ function StudentProfile() {
 
                     <div className="mt-3">
                       <h4>{`${lastName}, ${firstName} ${middleName}`}</h4>
-                      <p className="text-secondary mb-1">Bachelor of Studies</p>
+                      <p className="text-secondary mb-1">{program}</p>
                       <p className="text-muted font-size-sm">
-                        Taga Pagadian Ko
+                        {address}
                       </p>
                     </div>
                   </div>
@@ -157,7 +209,7 @@ function StudentProfile() {
                     <div className="col-sm-3">
                       <h6 className="mb-0">First Name:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Botchok</div>
+                    <div className="col-sm-9 text-secondary">{firstName}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
@@ -165,7 +217,7 @@ function StudentProfile() {
                       <h6 className="mb-0">Middle Name:</h6>
                     </div>
                     <div className="col-sm-9 text-secondary">
-                      Kenneth Valdez
+                      {middleName}
                     </div>
                   </div>
                   <hr></hr>
@@ -174,7 +226,7 @@ function StudentProfile() {
                       <h6 className="mb-0">Last Name:</h6>
                     </div>
                     <div className="col-sm-9 text-secondary">
-                      Kenneth Valdez
+                      {lastName}
                     </div>
                   </div>
                   <hr></hr>
@@ -182,28 +234,28 @@ function StudentProfile() {
                     <div className="col-sm-3">
                       <h6 className="mb-0">Gender:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Male</div>
+                    <div className="col-sm-9 text-secondary">{gender}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Date of Birth:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">dd/mm/yy</div>
+                    <div className="col-sm-9 text-secondary">{dob}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Place of Birth:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Pagadian city</div>
+                    <div className="col-sm-9 text-secondary">{pob}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Nationality:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Canadian</div>
+                    <div className="col-sm-9 text-secondary">{nationality}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
@@ -211,7 +263,7 @@ function StudentProfile() {
                       <h6 className="mb-0">Civil Status:</h6>
                     </div>
                     <div className="col-sm-9 text-secondary">
-                      Single sa tulo
+                      {civilStatus}
                     </div>
                   </div>
                   <hr></hr>
@@ -219,28 +271,28 @@ function StudentProfile() {
                     <div className="col-sm-3">
                       <h6 className="mb-0">Religion:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Christian</div>
+                    <div className="col-sm-9 text-secondary">{religion}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Ethnicity/Tribe:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Filipino</div>
+                    <div className="col-sm-9 text-secondary">{tribe}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Disability(if any):</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">ex. "Blind"</div>
+                    <div className="col-sm-9 text-secondary">{disability}</div>
                   </div>
                   <hr></hr>
                   <div className="row">
                     <div className="col-sm-3">
                       <h6 className="mb-0">Scholorship:</h6>
                     </div>
-                    <div className="col-sm-9 text-secondary">Wala uy tsk</div>
+                    <div className="col-sm-9 text-secondary">{scholarship}</div>
                   </div>
                 </div>
               </div>
@@ -259,7 +311,7 @@ function StudentProfile() {
                               <h6 className="mb-0">House or Street No.</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Pagadian City
+                              {cStreet}
                             </div>
                           </div>
                           <hr></hr>
@@ -268,7 +320,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Barangay, Town, City</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Wala ko kabalo
+                              {cBarangay}
                             </div>
                           </div>
                           <hr></hr>
@@ -276,7 +328,7 @@ function StudentProfile() {
                             <div className="col-sm-3">
                               <h6 className="mb-0">Zip Code:</h6>
                             </div>
-                            <div className="col-sm-9 text-secondary">7023</div>
+                            <div className="col-sm-9 text-secondary">{cZipCode}</div>
                           </div>
                           <hr></hr>
                           <div className="row">
@@ -284,7 +336,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Province, Country:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Wala sad ko kabalo
+                              {cProvince}
                             </div>
                           </div>
                           <hr></hr>
@@ -293,7 +345,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Mobile Phone No.:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              ex "09123456789"
+                              {cPhone}
                             </div>
                           </div>
                           <hr></hr>
@@ -302,7 +354,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Telephone No.:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              #8888-888
+                              {cTelPhone}
                             </div>
                           </div>
                         </div>
@@ -317,7 +369,7 @@ function StudentProfile() {
                               <h6 className="mb-0">House or Street No.</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Pagadian City
+                              {pStreet}
                             </div>
                           </div>
                           <hr></hr>
@@ -326,7 +378,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Barangay, Town, City</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Wala ko kabalo
+                              {pBarangay}
                             </div>
                           </div>
                           <hr></hr>
@@ -334,7 +386,7 @@ function StudentProfile() {
                             <div className="col-sm-3">
                               <h6 className="mb-0">Zip Code:</h6>
                             </div>
-                            <div className="col-sm-9 text-secondary">7023</div>
+                            <div className="col-sm-9 text-secondary">{pZipCode}</div>
                           </div>
                           <hr></hr>
                           <div className="row">
@@ -342,7 +394,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Province, Country:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              Wala sad ko kabalo
+                              {pProvince}
                             </div>
                           </div>
                           <hr></hr>
@@ -351,7 +403,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Mobile Phone No.:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              ex "09123456789"
+                              {pPhone}
                             </div>
                           </div>
                           <hr></hr>
@@ -360,7 +412,7 @@ function StudentProfile() {
                               <h6 className="mb-0">Telephone No.:</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
-                              #8888-888
+                              {pTelPhone}
                             </div>
                           </div>
                         </div>
@@ -379,7 +431,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Father's Name:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Botchokoy C. Kingkoy Sr.
+                        {fatherName}
                       </div>
                     </div>
                     <hr></hr>
@@ -387,7 +439,7 @@ function StudentProfile() {
                       <div className="col-sm-3">
                         <h6 className="mb-0">Educational Attainment:</h6>
                       </div>
-                      <div className="col-sm-9 text-secondary">High School</div>
+                      <div className="col-sm-9 text-secondary">{fatherEdu}</div>
                     </div>
                     <hr></hr>
                     <div className="row">
@@ -395,7 +447,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Occupation:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Multi Role job
+                        {fatherWork}
                       </div>
                     </div>
                     <hr></hr>
@@ -404,7 +456,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Mother's Name:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Chichay C. Kingkoy Sr.
+                        {motherName}
                       </div>
                     </div>
                     <hr></hr>
@@ -412,7 +464,7 @@ function StudentProfile() {
                       <div className="col-sm-3">
                         <h6 className="mb-0">Educational Attainment:</h6>
                       </div>
-                      <div className="col-sm-9 text-secondary">High School</div>
+                      <div className="col-sm-9 text-secondary">{motherEdu}</div>
                     </div>
                     <hr></hr>
                     <div className="row">
@@ -420,7 +472,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Occupation:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Multi Role job
+                        {motherWork}
                       </div>
                     </div>
                     <hr></hr>
@@ -430,7 +482,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Guardian's Name:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Chichay C. Kingkoy Sr.
+                        {guardianName}
                       </div>
                     </div>
                     <hr></hr>
@@ -438,7 +490,7 @@ function StudentProfile() {
                       <div className="col-sm-3">
                         <h6 className="mb-0">Relationship:</h6>
                       </div>
-                      <div className="col-sm-9 text-secondary">aunt</div>
+                      <div className="col-sm-9 text-secondary">{guardianRelationship}</div>
                     </div>
                     <hr></hr>
                     <div className="row">
@@ -446,7 +498,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Address:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        Next to my neigbors house
+                        {guardianAddress}
                       </div>
                     </div>
                     <hr></hr>
@@ -455,7 +507,7 @@ function StudentProfile() {
                         <h6 className="mb-0">Mobile No.:</h6>
                       </div>
                       <div className="col-sm-9 text-secondary">
-                        ex "09123456789"
+                        {guardianContact}
                       </div>
                     </div>
                   </div>

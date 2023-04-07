@@ -1,20 +1,62 @@
-import React from 'react'
+import React, {useState, useEffect, useContext, createContext} from 'react'
 import "../Styles.css"
 import ProfilePic from "../assets/react.svg"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from 'axios'
+import { CurrentUserContext } from '../CreateContext.js'
+
+
 
 function SideMenu() {
+    const navigate = useNavigate();
+    const [fullname, setFullname] = useState("");
+
+
+      const handleCurrentUser = () => {
+        const currentUser = localStorage.getItem("currentUser");
+
+        if (currentUser) {
+          const adminDetails = JSON.parse(currentUser);
+          setFullname(
+            `${adminDetails.first_name} ${adminDetails.middle_name[0]} ${adminDetails.last_name}`
+          );
+        } else {
+          navigate("/admin_login");
+        }
+      };
+
+      useEffect(() => {
+        handleCurrentUser();
+      }, []);
+
     const links = [ 
       { text: "Dashboard", url: '/'},
       { text: "Admission", url: '/admission'},
       { text: "Student", url: '/students'},
-      { text: "Settings", url: '/settings'},
-      { text: "Logout", url: '#'}
-    ] 
+      { text: "Settings", url: '/settings'}
+    ]
+    
 
-    const currentUrl = `/${window.location.pathname.split('/')[1]}`;
+    const handleLogout = () => {
+      localStorage.removeItem('currentUser')
+      navigate('/admin_login')
+    }
+
+    const currentUrl = `${window.location.pathname}`;
+
     console.log(currentUrl)
 
+    const isActive = (path) => {
+      return currentUrl === path
+        ? "side-menu__link side-menu__link--active"
+        : "side-menu__link";
+    };
+
+    const isActiveSettings = (path) => {
+      return currentUrl.includes(path)
+        ? "side-menu__link side-menu__link--active"
+        : "side-menu__link";
+    };
 
     return (
       <div className="side-menu__container">
@@ -27,10 +69,10 @@ function SideMenu() {
                 className="profile__img"
               />
             </div>
-            <h1 className="profile__title">Admin</h1>
+            <h1 className="profile__title">{fullname}</h1>
           </div>
           <ul className="side-menu__links">
-            {links.map((link, index) => (
+            {/* {links.map((link, index) => (
               <li key={index}>
                 <Link
                   className={
@@ -43,12 +85,15 @@ function SideMenu() {
                   {link.text}
                 </Link>
               </li>
-            ))}
-            {/* <li><Link className='side-menu__link' to="/">Dashboard</Link></li>
-                    <li><Link className='side-menu__link' to="/admission">Admission</Link></li>
-                    <li><Link className='side-menu__link' to="/students">Student</Link></li>
-                    <li><Link className='side-menu__link' to="#">Menu</Link></li>
-                    <li><a className='side-menu__link' href="#">Logout</a></li> */}
+            ))} */}
+            {/* <li>
+              <Link className='side-menu__link' onClick={handleLogout}>Logout</Link>
+            </li> */}
+            <li><Link className={isActive('/')} to="/">Dashboard</Link></li>
+            <li><Link className={isActive('/admission')} to="/admission">Admission</Link></li>
+            <li><Link className={isActive('/students')} to='/students'>Student</Link></li>
+            <li><Link className={isActiveSettings('/settings')} to='/settings'>Settings</Link></li>
+            <li><a className='side-menu__link' onClick={handleLogout} to=''>Logout</a></li>
           </ul>
         </div>
       </div>

@@ -49,7 +49,7 @@ function Dashboard() {
 
     return (
       <div id="menu__container">
-        <SideMenu />
+        <SideMenu/>
         <div className="pages__container">
           <div className="pages__wrapper">
             <Header title={"Dashboard"} />

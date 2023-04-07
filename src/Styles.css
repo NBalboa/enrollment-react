@@ -72,9 +72,10 @@
 }
 
 .profile__title {
-    font-size: 42px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 500;
     color: #FFFDE3;
+    text-align: center;
 }
 
 /* side-menu */

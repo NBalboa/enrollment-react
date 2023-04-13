@@ -26,7 +26,7 @@ function AdminLogin({onLogin}) {
             if(res.data.data){
                 console.log(res.data.data);
                 onLogin(res.data.data);
-                navigate('/')
+                // navigate('/')
             }
         })
         .catch(err => {

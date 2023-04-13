@@ -17,6 +17,10 @@ function TopMenu() {
     return currentUrl.includes(path) ? "drop navigation--active" : "drop";
   }
 
+  const isSubjectSelectedActive = (path) => {
+    return currentUrl === path ? "drop-content--active" : "";
+  }
+
   return (
     <nav>
       <div className="navigation">
@@ -29,8 +33,18 @@ function TopMenu() {
             <i className="fa fa-caret-down"></i>
           </button>
           <div className="drop-content">
-            <Link to="/settings/list_subject">List of Subjects</Link>
-            <Link to="/settings/add_subject">Add Subjects</Link>
+            <Link
+              to="/settings/list_subject"
+              className={isSubjectSelectedActive("/settings/list_subject")}
+            >
+              List of Subjects
+            </Link>
+            <Link
+              to="/settings/add_subject"
+              className={isSubjectSelectedActive("/settings/add_subject")}
+            >
+              Add Subjects
+            </Link>
           </div>
         </div>
         <Link

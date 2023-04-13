@@ -58,6 +58,10 @@
   text-align: left;
 }
 
+.drop-content--active {
+  background-color: #ddd;
+}
+
 .drop-content a:hover {
   background-color: #ddd;
 }

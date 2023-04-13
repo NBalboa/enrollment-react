@@ -20,6 +20,7 @@ function Dashboard() {
             "http://localhost:3000/api/admission/counting"
         );
         const details = data[0]
+        console.log(details);
         setTotal(details.total);
         setMale(details.male)
         setFemale(details.Female)
@@ -61,7 +62,7 @@ function Dashboard() {
                       <h3 className="m-b-20">Total No. Admitted</h3>
                       <h2 className="text-right">
                         <i className="fa-solid fa-globe">
-                          <span className="ms-3">{male}</span>
+                          <span className="ms-3">{total}</span>
                         </i>
                       </h2>
                     </div>

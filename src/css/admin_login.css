@@ -7,7 +7,16 @@
   background-color: crimson;
 }
 
-.logo-container {
+.login-container--student{
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f1f1f1;
+}
+
+.logo-container,  .login-container--student{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,9 +40,9 @@
   border-radius: 5px;
 }
 
-.login-container input[type="email"],
-.login-container input[type="password"],
-.login-container input[type="text"] {
+.login-container input[type="email"], .login-container--student input[type="email"],
+.login-container input[type="password"], .login-container--student input[type="password"],
+.login-container input[type="text"], .login-container--student input[type="text"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -43,12 +52,12 @@
   font-size: 16px;
 }
 
-.login-container .password-container {
+.login-container .password-container, .login-container--student .password-container {
   position: relative;
   width: 100%;
 }
 
-.login-container input[type="password"] {
+.login-container input[type="password"], .login-container--student input[type="password"] {
   padding-right: 35px;
 }
 
@@ -70,7 +79,7 @@
 }
 
 
-.login-container button[type="submit"] {
+.login-container button[type="submit"], .login-container--student button[type="submit"] {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -81,3 +90,4 @@
   font-size: 16px;
   cursor: pointer;
 }
+

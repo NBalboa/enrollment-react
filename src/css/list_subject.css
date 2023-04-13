@@ -1,0 +1,51 @@
+.subject_table {
+    background-color: #eee;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.subject_table h1 {
+    color: crimson;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+
+
+.subject_table th,
+.subject_table td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid crimson;
+}
+
+.subject_table th {
+  background-color: crimson;
+  color: white;
+}
+
+/* Tablet and desktop styles */
+@media screen and (min-width: 768px) {
+  .subject_table {
+    font-size: 1.1rem;
+  }
+  
+  .subject_table th,
+  .subject_table td {
+    padding: 0.75rem;
+  }
+}
+
+/* Large desktop styles */
+@media screen and (min-width: 1200px) {
+  .subject_table {
+    font-size: 1.2rem;
+  }
+}
+
+
+

@@ -13,14 +13,16 @@ function SideMenu() {
 
 
       const handleCurrentUser = () => {
-        const currentUser = localStorage.getItem("currentUser");
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        console.log(`the current user ${currentUser.role}`)
 
-        if (currentUser) {
-          const adminDetails = JSON.parse(currentUser);
+        if (currentUser.role === "admin") {
+          const adminDetails = currentUser;
           setFullname(
             `${adminDetails.first_name} ${adminDetails.middle_name[0]} ${adminDetails.last_name}`
           );
         } else {
+          // console.log(currentUser)
           navigate("/admin_login");
         }
       };
@@ -29,22 +31,14 @@ function SideMenu() {
         handleCurrentUser();
       }, []);
 
-    const links = [ 
-      { text: "Dashboard", url: '/'},
-      { text: "Admission", url: '/admission'},
-      { text: "Student", url: '/students'},
-      { text: "Settings", url: '/settings'}
-    ]
-    
 
     const handleLogout = () => {
-      localStorage.removeItem('currentUser')
+      localStorage.removeItem('currentUser');
+      localStorage.clear();
       navigate('/admin_login')
     }
 
     const currentUrl = `${window.location.pathname}`;
-
-    console.log(currentUrl)
 
     const isActive = (path) => {
       return currentUrl === path

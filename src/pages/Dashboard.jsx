@@ -20,7 +20,7 @@ function Dashboard() {
             "http://localhost:3000/api/admission/counting"
         );
         const details = data[0]
-        console.log(details);
+        // console.log(details);
         setTotal(details.total);
         setMale(details.male)
         setFemale(details.Female)
@@ -30,7 +30,7 @@ function Dashboard() {
         const { data } = await axios.get(
             "http://localhost:3000/api/admission/recent_add"
         );
-        console.log(data);
+        // console.log(data);
         setData(data);
     }
 
@@ -38,7 +38,7 @@ function Dashboard() {
        const { data } = await axios.delete(
          `http://localhost:3000/api/admission/delete/${id}`
        );
-       console.log(data);
+      //  console.log(data);
        handleData();
      };
 

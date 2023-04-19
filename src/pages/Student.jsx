@@ -9,9 +9,11 @@ import ReactPaginate from "react-paginate";
 
 function Student() {
     const [searchBy, setSearchBy] = useState("ID");
-    const [studentID, setStudentID] = useState("");
-    const [name, setName] = useState();
+    // const [studentID, setStudentID] = useState("");
+    // const [name, setName] = useState();
     const [data, setData] = useState([]);
+    const [type, setType] = useState("student_id");
+    const [keyword, setKeyword] = useState("");
 
     const [currentPage, setCurrentPage] = useState(0);
     const handlePageChange = ({ selected }) => {
@@ -24,58 +26,66 @@ function Student() {
     const startIndex = currentPage * itemsPerPage;
     const selectedItems = data.slice(startIndex, startIndex + itemsPerPage);
 
-    console.log(selectedItems);
+    // console.log(selectedItems);
 
     const handleData = async function() {
         const { data } = await axios.get(
           "http://localhost:3000/api/admission/students"
         );
-        console.log(data);
+        // console.log(data);
         setData(data);
     }
 
+
+    // const handleDownload = async function() {
+    //     e.preventDefault();
+    //     const { data } = await axios.get(
+    //       "http://localhost:3000/api/studen/data"
+    //     );
+    //     console.log(data);
+    //     // setData(data);
+    // }
 
 
 
 
     const handleSearch = async (e) => {
-        let checkLength = e.target.value;
-        if(checkLength.length <= 1) {
-            setName("");
-            setStudentID("");
-        }
-        else{
-            if (searchBy == "ID") {
-                setStudentID(e.target.value);
-                setName("");
-            } else {
-                setName(e.target.value);
-                setStudentID("");
-            }
-        }
-        
 
-        const search = {
-            student_id: studentID,
-            name: name
+        e.preventDefault();
+
+        if(type === "all"){
+          handleData()
+          return
         }
 
-        const {data} = await axios.post("http://localhost:3000/api/admission/search", search, {responseType: "json"})
-        if(data.result.length > 0) {
-            setData(data.result)
-            console.log(data.result)
+        if(keyword === ""){
+          alert("Please enter a search keyword")
+          return
+        }
+
+        const {data} = await axios.post(`http://localhost:3000/api/admission/search/${type}/${keyword}`)
+
+        if(data.result.length > 0){
+          setData(data.result)
         }
         else{
-            setData(data.result);
-            console.log("Student Not Found")
+          alert("No result found")
         }
+        // console.log(data.result)
+       
     }
 
     const handleDelete = async function (id) {
-        const { data } = await axios.delete(
+
+        const userChoice = window.confirm("Are you sure you want to delete this student?")
+
+        if(userChoice){
+          const { data } = await axios.delete(
             `http://localhost:3000/api/admission/delete/${id}`
-        );
-        console.log(data);
+          );
+        }
+        
+        // console.log(data);
         handleData();
     };
 
@@ -95,17 +105,29 @@ function Student() {
                 <h3 className="search__title">Search a Student</h3>
                 <div className="search__student">
                   <div className="search__wrapper">
-                    <input type="text" id="search" onChange={handleSearch} />
+                    <input
+                      type="text"
+                      id="search"
+                      value={keyword}
+                      onChange={(e) => setKeyword(e.target.value)}
+                    />
                     <div className="search__by">
                       <label>Search by: </label>
                       <select
-                        value={searchBy}
-                        onChange={(e) => setSearchBy(e.target.value)}
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
                       >
-                        <option value="ID">Student I.D.</option>
+                        <option value="student_id">Student I.D.</option>
                         <option value="name">Student Name</option>
+                        <option value="all">Show All</option>
                       </select>
                     </div>
+                    <button
+                      className="btn btn-small btn-success"
+                      onClick={handleSearch}
+                    >
+                      Search
+                    </button>
                   </div>
                 </div>
                 <div className="student__wrappper">
@@ -128,15 +150,15 @@ function Student() {
                           onDelete={handleDelete}
                         />
                       ))}
-                      {/* {data.map((student) => (
-                        <Students
-                          key={student.id}
-                          data={student}
-                          onDelete={handleDelete}
-                        />
-                      ))} */}
                     </tbody>
                   </table>
+                  <a
+                    className="btn btn-success"
+                    href="http://localhost:3000/api/student/data"
+                    target='_blank'
+                  >
+                    Download
+                  </a>
                   <div className="d-flex justify-content-center">
                     <ReactPaginate
                       pageCount={pageCount}

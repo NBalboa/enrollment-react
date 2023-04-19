@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { CurrentUserContext } from '../CreateContext.js'
 
-function AdminLogin({onLogin}) {
+function AdminLogin() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,11 +23,27 @@ function AdminLogin({onLogin}) {
 
         axios.post("http://localhost:3000/api/admin/login", admin)
         .then(res => {
-            if(res.data.data){
-                console.log(res.data.data);
-                onLogin(res.data.data);
-                // navigate('/')
+            // console.log(res.data.errors)
+            if(res.data.errors){
+                let errorString = "";
+                res.data.errors.forEach((error) => {
+                  errorString += error.msg + "\n";
+                });
+                alert(errorString);
             }
+            else if(res.data.error){
+                alert(res.data.error);
+            }
+            else if(res.data.data.role === 'admin'){
+              alert("Login Successful");
+              localStorage.setItem("currentUser", JSON.stringify(res.data.data));
+              navigate("/");
+              // onLogin(res.data.data);
+            }
+            // else{
+            //   alert("Something went wrong. Please try again later.")
+            // }
+
         })
         .catch(err => {
             console.log(err);

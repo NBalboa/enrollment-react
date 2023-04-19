@@ -53,6 +53,12 @@ function TopMenu() {
         >
           About the Developer
         </Link>
+        <Link 
+          to="/settings/about_company"
+          className={isActive("/settings/about_company")}
+        >
+          About the Company
+        </Link>
       </div>
     </nav>
   );

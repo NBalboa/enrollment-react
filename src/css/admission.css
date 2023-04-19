@@ -42,12 +42,12 @@
         border-radius: 9999px;
     }
 
-.student__profile {
+.student__profile--admission {
     display: flex;
     flex-direction: column;
 }
 
-.student__photo {
+.student__photo--admission {
     position: absolute;
     height: 200px;
     width: 200px;
@@ -155,10 +155,16 @@
         padding: 4px 12px;
     }
 
-.student__info {
+.required {
+    color: red;
+}
+
+
+.student__info--admission {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 12px;
+    text-align: left;
 }
 
 
@@ -215,13 +221,14 @@
 }
 
 .with__cb {
-    margin-top: 18px;
     display: flex;
-    align-items: center;
-    justify-content: start;
 }
 
     .with__cb h3 {
+        margin: 8px 8px;
+    }
+
+    .with__cb p {
         margin: 8px 8px;
     }
 
@@ -267,4 +274,8 @@
 
 .red__btn--right:hover {
     opacity: .7;
+}
+
+.display-none {
+    display: none;
 }

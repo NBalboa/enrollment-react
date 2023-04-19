@@ -1,0 +1,23 @@
+.page__row--developer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .text__container0 {
+    flex-basis: 70%;
+    text-align: justify;
+    padding-right: 20px;
+  }
+  
+  .image__container0 {
+    flex-basis: 30%;
+    text-align: center;
+  }
+  
+  .image__container0 img {
+    width: 80%;
+
+  }
+  

@@ -20,7 +20,14 @@ function AddSubject() {
 
     try{
       const res = await axios.post("http://localhost:3000/api/subject/add_subject", subject);
-      console.log(res.data);
+      if(res.data.errors){
+        let errorString = "";
+        res.data.errors.forEach((error) => {
+          errorString += error.msg + "\n";
+        });
+        alert(errorString);
+      }
+      alert(res.data.data);
     }
     catch(err){
       console.log(err);

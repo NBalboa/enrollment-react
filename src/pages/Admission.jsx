@@ -6,6 +6,7 @@ import "../css/admission.css"
 
 
 function Admission() {
+    // #region constant variables in Addmission
     const [profile, setProfile] = useState(null);
     const [previewProfile, setPreviewProfile] = useState(null);
     const [hide, setHide] = useState(false);
@@ -50,10 +51,22 @@ function Admission() {
     const [guardianRelationship, setGuardianRelationship] = useState("");
     const [guardianAddress, setGuardianAddress] = useState("");
     const [guardianContact, setGuardianContact] = useState("");
+    // #endregion
+    const [errors, setErrors] = useState([]);
 
 
     const handleHide = (e) => {
       setHide(e.target.checked);
+    }
+
+    const isDisplay = (hide) => {
+
+      if (hide) {
+        return "three_details--column display-none";
+      } else {
+        return "three_details--column";
+      }
+
     }
 
     const uploadProfile = (e) => {
@@ -64,9 +77,16 @@ function Admission() {
     const handleAdmit = (e) => {
       e.preventDefault()
       console.log("Profile " + profile);
-      let convertedDob = new Date(dob).toISOString().slice(0, 19).replace("T", " ");
+      let convertedDob = ""
+      if(dob){
+        convertedDob = new Date(dob)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ");
+      }
 
       let formData = new FormData();
+      // #region form data
 
       formData.append("profile", previewProfile);
       formData.append("student_id", studID);
@@ -88,12 +108,26 @@ function Admission() {
       formData.append("current_zipcode", cZipCode);
       formData.append("current_phone", cPhone);
       formData.append("current_telphone", cTelPhone);
-      formData.append("permanent_street", pStreet);
-      formData.append("permanent_barangay", pBarangay);
-      formData.append("permanent_province", pProvince);
-      formData.append("permanent_zipcode", pZipCode);
-      formData.append("permanent_phone", pPhone);
-      formData.append("permanent_telphone", pTelPhone);
+
+      if(hide){
+        console.log("same")
+        formData.append("permanent_street", cStreet);
+        formData.append("permanent_barangay", cBarangay);
+        formData.append("permanent_province", cProvince);
+        formData.append("permanent_zipcode", cZipCode);
+        formData.append("permanent_phone", cPhone);
+        formData.append("permanent_telphone", cTelPhone);
+      }
+      else{
+        console.log("not same")
+        formData.append("permanent_street", pStreet);
+        formData.append("permanent_barangay", pBarangay);
+        formData.append("permanent_province", pProvince);
+        formData.append("permanent_zipcode", pZipCode);
+        formData.append("permanent_phone", pPhone);
+        formData.append("permanent_telphone", pTelPhone);
+      }
+      
       formData.append("type_of_admission", admissionType);
       formData.append("enrollment_status", enrollmentStatus);
       formData.append("program", program);
@@ -110,14 +144,24 @@ function Admission() {
       formData.append("g_address", guardianAddress);
       formData.append("g_mobile", guardianContact);
       formData.append("sy", sy);
-
+      // #endregion
       fetch("http://localhost:3000/api/admission/admit", {
         method: "POST",
         body: formData,
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data.data);
+          if(data.errors){
+            let errorString = ""
+            data.errors.forEach((error) => {
+              errorString += error.msg + "\n";
+
+            })
+            alert(errorString)
+          }
+          else {
+            alert(data.data)
+          }
         });
   }
     return (
@@ -138,6 +182,10 @@ function Admission() {
                     <p className="official__subtitle">
                       To be filled by WMSU addmiting official:
                     </p>
+                    <p className="official__subtitle">
+                      Required field are mark (
+                      <span className="required">*</span>)
+                    </p>
                     <div className="student__status">
                       <p className="colleges">College of WMSU PAGADIAN</p>
                       <label className="official__input">
@@ -148,8 +196,11 @@ function Admission() {
                           onChange={(e) => setSy(e.target.value)}
                         />
                       </label>
-                      <div className="student__profile">
-                        <img className="student__photo" src={profile} />
+                      <div className="student__profile--admission">
+                        <img
+                          className="student__photo--admission"
+                          src={profile}
+                        />
                         <input
                           type="file"
                           id="profile"
@@ -209,8 +260,8 @@ function Admission() {
                           value={semester}
                           onChange={(e) => setSemester(e.target.value)}
                         >
-                          <option value='1st Semester'>1st Semester</option>
-                          <option value='2nd Semester'>2nd Semester</option>
+                          <option value="1st Semester">1st Semester</option>
+                          <option value="2nd Semester">2nd Semester</option>
                         </select>
                       </div>
                     </div>
@@ -230,10 +281,10 @@ function Admission() {
                           value={yearLevel}
                           onChange={(e) => setYearLevel(e.target.value)}
                         >
-                          <option value='1st'>1st</option>
-                          <option value='2nd'>2nd</option>
-                          <option value='3rd'>3rd</option>
-                          <option value='4th'>4th</option>
+                          <option value="1st">1st</option>
+                          <option value="2nd">2nd</option>
+                          <option value="3rd">3rd</option>
+                          <option value="4th">4th</option>
                         </select>
                       </div>
                     </div>
@@ -241,7 +292,9 @@ function Admission() {
                       <h3 className="details__title">Personal Details</h3>
                       <div className="fullname">
                         <div className="student__label--column">
-                          <label className="student__info">Last Name</label>
+                          <label className="student__info--admission">
+                            Last Name <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Dela Cruz"'
@@ -250,7 +303,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">First Name</label>
+                          <label className="student__info--admission">
+                            First Name <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Juan"'
@@ -259,7 +314,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Middle Name</label>
+                          <label className="student__info--admission">
+                            Middle Name <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Panday"'
@@ -270,17 +327,21 @@ function Admission() {
                       </div>
                       <div className="two__details">
                         <div className="student__select">
-                          <label>Gender</label>
+                          <label>
+                            Gender <span className="required">*</span>
+                          </label>
                           <select
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                           >
-                            <option value='Male'>Male</option>
-                            <option value='Female'>Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                           </select>
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Date of Birth</label>
+                          <label className="student__info--admission">
+                            Date of Birth <span className="required">*</span>
+                          </label>
                           <input
                             type="date"
                             value={dob}
@@ -290,8 +351,8 @@ function Admission() {
                       </div>
                       <div className="four__details">
                         <div className="student__label--column">
-                          <label className="student__info">
-                            Place of Birth
+                          <label className="student__info--admission">
+                            Place of Birth <span className="required">*</span>
                           </label>
                           <input
                             type="text"
@@ -301,7 +362,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Nationality</label>
+                          <label className="student__info--admission">
+                            Nationality <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Filipino"'
@@ -310,7 +373,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Civil Status</label>
+                          <label className="student__info--admission">
+                            Civil Status <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Single/Married"'
@@ -319,7 +384,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Religion</label>
+                          <label className="student__info--admission">
+                            Religion <span className="required">*</span>
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Roman Catholic"'
@@ -330,8 +397,8 @@ function Admission() {
                       </div>
                       <div className="three__details">
                         <div className="student__label--column">
-                          <label className="student__info">
-                            Ethnicity/Tribe
+                          <label className="student__info--admission">
+                            Ethnicity/Tribe <span className="required">*</span>
                           </label>
                           <input
                             type="text"
@@ -341,7 +408,7 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">
+                          <label className="student__info--admission">
                             Disability(if any)
                           </label>
                           <input
@@ -352,7 +419,9 @@ function Admission() {
                           />
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info">Scholarship</label>
+                          <label className="student__info--admission">
+                            Scholarship
+                          </label>
                           <input
                             type="text"
                             placeholder='ex. "Dela Cruz"'
@@ -365,7 +434,8 @@ function Admission() {
                     <div className="addresses">
                       <div className="current__address">
                         <h3 className="details__title">
-                          Current Address (City Address)
+                          Current Address (City Address){" "}
+                          <span className="required">*</span>
                         </h3>
                         <div className="three_details--column">
                           <input
@@ -444,17 +514,14 @@ function Admission() {
                           />
                           <h3 className="details__title">
                             Permanent Address (City Address)
+                            <span className="required"> *</span>
                           </h3>
                           <p>
-                            (
-                            <i>
-                              click checkbox if the inform is the same above
-                            </i>
-                            )
+                            ( click checkbox if the inform is the same above )
                           </p>
                         </div>
 
-                        <div className="three_details--column">
+                        <div className={isDisplay(hide)}>
                           <input
                             type="text"
                             placeholder="address"
@@ -485,46 +552,48 @@ function Admission() {
                           <label className="bottom__label--center">
                             Province, Country
                           </label>
-                        </div>
-                        <div className="three__details">
-                          <div className="student__label--column">
-                            <input
-                              type="text"
-                              placeholder='ex. "Dela Cruz"'
-                              value={pZipCode}
-                              onChange={(e) => setPZipCode(e.target.value)}
-                            />
-                            <label className="student__info--center">
-                              Zip Code
-                            </label>
-                          </div>
-                          <div className="student__label--column">
-                            <input
-                              type="text"
-                              placeholder='ex. "Dela Cruz"'
-                              value={pPhone}
-                              onChange={(e) => setPPhone(e.target.value)}
-                            />
-                            <label className="student__info--center">
-                              Mobile Phone No.
-                            </label>
-                          </div>
-                          <div className="student__label--column">
-                            <input
-                              type="text"
-                              placeholder='ex. "Dela Cruz"'
-                              value={pTelPhone}
-                              onChange={(e) => setPTelPhone(e.target.value)}
-                            />
-                            <label className="student__info--center">
-                              Telephone No.
-                            </label>
+                          <div className="three__details">
+                            <div className="student__label--column">
+                              <input
+                                type="text"
+                                placeholder='ex. "Dela Cruz"'
+                                value={pZipCode}
+                                onChange={(e) => setPZipCode(e.target.value)}
+                              />
+                              <label className="student__info--center">
+                                Zip Code
+                              </label>
+                            </div>
+                            <div className="student__label--column">
+                              <input
+                                type="text"
+                                placeholder='ex. "Dela Cruz"'
+                                value={pPhone}
+                                onChange={(e) => setPPhone(e.target.value)}
+                              />
+                              <label className="student__info--center">
+                                Mobile Phone No.
+                              </label>
+                            </div>
+                            <div className="student__label--column">
+                              <input
+                                type="text"
+                                placeholder='ex. "Dela Cruz"'
+                                value={pTelPhone}
+                                onChange={(e) => setPTelPhone(e.target.value)}
+                              />
+                              <label className="student__info--center">
+                                Telephone No.
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="parents">
-                      <h3 className="details__title">Parents</h3>
+                      <h3 className="details__title">
+                        Parents <span className="required">*</span>
+                      </h3>
                       <div className="parents__info">
                         <div className="not__two--details--column">
                           <label className="parent__label label--bold">

@@ -12,6 +12,7 @@ function StudentTopNav() {
 
     const handleLogout = () => {
         localStorage.removeItem('currentUser')
+        localStorage.clear()
         navigate('/student_login')
     }
 

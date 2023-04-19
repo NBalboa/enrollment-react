@@ -62,10 +62,22 @@ function UpdateForm() {
 
   const {id} = useParams();
 
+      const handleHide = (e) => {
+        setHide(e.target.checked);
+      };
+
+      const isDisplay = (hide) => {
+        if (hide) {
+          return "three_details--column display-none";
+        } else {
+          return "three_details--column";
+        }
+      };
+
   const handleData = async () => {
     try {
         const {data} = await axios.get(`http://localhost:3000/api/admission/student/${id}`);
-        console.log(`Student ID: ${id}`);
+        // console.log(`Student ID: ${id}`);
         const student = data[0]
         const date = new Date(student.dob);
         const htmlDate = date.toISOString().split("T")[0];
@@ -116,7 +128,7 @@ function UpdateForm() {
             setUsername('');
             setPassword('');
         }
-        console.log(student)
+        // console.log(student)
     }
     catch(e){
         console.log(e)
@@ -127,9 +139,9 @@ function UpdateForm() {
     handleData();
   }, [])
 
-  const handleHide = (e) => {
-    setHide(e.target.checked);
-  };
+  // const handleHide = (e) => {
+  //   setHide(e.target.checked);
+  // };
 
   const uploadProfile = (e) => {
     setProfile(URL.createObjectURL(e.target.files[0]));
@@ -138,14 +150,17 @@ function UpdateForm() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("Profile " + profile);
+    // console.log("Profile " + profile);
     let convertedDob = new Date(dob)
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
 
     let formData = new FormData();
+
+
     if(profile !== null){
+      console.log("not null")
       formData.append("profile", previewProfile);
     }
 
@@ -169,12 +184,26 @@ function UpdateForm() {
     formData.append("current_zipcode", cZipCode);
     formData.append("current_phone", cPhone);
     formData.append("current_telphone", cTelPhone);
-    formData.append("permanent_street", pStreet);
-    formData.append("permanent_barangay", pBarangay);
-    formData.append("permanent_province", pProvince);
-    formData.append("permanent_zipcode", pZipCode);
-    formData.append("permanent_phone", pPhone);
-    formData.append("permanent_telphone", pTelPhone);
+
+    if(hide){
+        // console.log("same")
+        formData.append("permanent_street", cStreet);
+        formData.append("permanent_barangay", cBarangay);
+        formData.append("permanent_province", cProvince);
+        formData.append("permanent_zipcode", cZipCode);
+        formData.append("permanent_phone", cPhone);
+        formData.append("permanent_telphone", cTelPhone);
+      }
+      else{
+        // console.log("not same")
+        formData.append("permanent_street", pStreet);
+        formData.append("permanent_barangay", pBarangay);
+        formData.append("permanent_province", pProvince);
+        formData.append("permanent_zipcode", pZipCode);
+        formData.append("permanent_phone", pPhone);
+        formData.append("permanent_telphone", pTelPhone);
+      }
+
     formData.append("type_of_admission", admissionType);
     formData.append("enrollment_status", enrollmentStatus);
     formData.append("program", program);
@@ -195,7 +224,19 @@ function UpdateForm() {
       await axios
         .put(`http://localhost:3000/api/admission/update/${id}`, formData)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.errors);
+          if(res.data.errors){
+            let errorString = "";
+            res.data.errors.forEach((error) => {
+              errorString += error.msg + "\n";
+            });
+            alert(errorString);
+          }
+          else{
+            alert(res.data.data)
+          }
+
+          // console.log(res.data.data);
           handleData();
         });
     }
@@ -211,7 +252,7 @@ function UpdateForm() {
 
     await axios.put(`http://localhost:3000/api/admission/update/${id}`, formData)
     .then((res) => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         handleData();
     })
 
@@ -242,6 +283,10 @@ function UpdateForm() {
                   <p className="official__subtitle">
                     To be filled by WMSU addmiting official:
                   </p>
+                  <p className="official__subtitle">
+                    Required field are mark (<span className="required">*</span>
+                    )
+                  </p>
                   <div className="student__status">
                     <p className="colleges">College of WMSU PAGADIAN</p>
                     <label className="official__input">
@@ -252,16 +297,14 @@ function UpdateForm() {
                         onChange={(e) => setSy(e.target.value)}
                       />
                     </label>
-                    <div className="student__profile">
-                      {/* {profile === null ? {src:`http://localhost/${currentProfile}`} : false } */}
-                      {/* <img className="student__photo"  {profile === null}/> */}
+                    <div className="student__profile--admission">
                       {profile === null ? (
                         <img
-                          className="student__photo"
+                          className="student__photo--admission"
                           src={`http://localhost:3000/${currentProfile}`}
                         />
                       ) : (
-                        <img className="student__photo" src={profile} />
+                        <img className="student__photo--admission" src={profile} />
                       )}
                       <input
                         type="file"
@@ -354,7 +397,9 @@ function UpdateForm() {
                     <h3 className="details__title">Personal Details</h3>
                     <div className="fullname">
                       <div className="student__label--column">
-                        <label className="student__info">Last Name</label>
+                        <label className="student__info--admission">
+                          Last Name <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Dela Cruz"'
@@ -363,7 +408,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">First Name</label>
+                        <label className="student__info--admission">
+                          First Name <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Juan"'
@@ -372,7 +419,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Middle Name</label>
+                        <label className="student__info--admission">
+                          Middle Name <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Panday"'
@@ -383,7 +432,9 @@ function UpdateForm() {
                     </div>
                     <div className="two__details">
                       <div className="student__select">
-                        <label>Gender</label>
+                        <label>
+                          Gender <span className="required">*</span>
+                        </label>
                         <select
                           value={gender}
                           onChange={(e) => setGender(e.target.value)}
@@ -393,7 +444,9 @@ function UpdateForm() {
                         </select>
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Date of Birth</label>
+                        <label className="student__info--admission">
+                          Date of Birth <span className="required">*</span>
+                        </label>
                         <input
                           type="date"
                           value={dob}
@@ -403,7 +456,9 @@ function UpdateForm() {
                     </div>
                     <div className="four__details">
                       <div className="student__label--column">
-                        <label className="student__info">Place of Birth</label>
+                        <label className="student__info--admission">
+                          Place of Birth <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Sta. Lucia, Pagadian City"'
@@ -412,7 +467,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Nationality</label>
+                        <label className="student__info--admission">
+                          Nationality <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Filipino"'
@@ -421,7 +478,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Civil Status</label>
+                        <label className="student__info--admission">
+                          Civil Status <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Single/Married"'
@@ -430,7 +489,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Religion</label>
+                        <label className="student__info--admission">
+                          Religion <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Roman Catholic"'
@@ -441,7 +502,9 @@ function UpdateForm() {
                     </div>
                     <div className="three__details">
                       <div className="student__label--column">
-                        <label className="student__info">Ethnicity/Tribe</label>
+                        <label className="student__info--admission">
+                          Ethnicity/Tribe <span className="required">*</span>
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Subanen"'
@@ -450,7 +513,7 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">
+                        <label className="student__info--admission">
                           Disability(if any)
                         </label>
                         <input
@@ -461,7 +524,9 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info">Scholarship</label>
+                        <label className="student__info--admission">
+                          Scholarship
+                        </label>
                         <input
                           type="text"
                           placeholder='ex. "Dela Cruz"'
@@ -474,7 +539,8 @@ function UpdateForm() {
                   <div className="addresses">
                     <div className="current__address">
                       <h3 className="details__title">
-                        Current Address (City Address)
+                        Current Address (City Address){" "}
+                        <span className="required">*</span>
                       </h3>
                       <div className="three_details--column">
                         <input
@@ -553,14 +619,14 @@ function UpdateForm() {
                         />
                         <h3 className="details__title">
                           Permanent Address (City Address)
+                          <span className="required"> *</span>
                         </h3>
                         <p>
-                          (<i>click checkbox if the inform is the same above</i>
-                          )
+                          ( click checkbox if the inform is the same above )
                         </p>
                       </div>
 
-                      <div className="three_details--column">
+                      <div className={isDisplay(hide)}>
                         <input
                           type="text"
                           placeholder="address"
@@ -591,46 +657,48 @@ function UpdateForm() {
                         <label className="bottom__label--center">
                           Province, Country
                         </label>
-                      </div>
-                      <div className="three__details">
-                        <div className="student__label--column">
-                          <input
-                            type="text"
-                            placeholder='ex. "Dela Cruz"'
-                            value={pZipCode}
-                            onChange={(e) => setPZipCode(e.target.value)}
-                          />
-                          <label className="student__info--center">
-                            Zip Code
-                          </label>
-                        </div>
-                        <div className="student__label--column">
-                          <input
-                            type="text"
-                            placeholder='ex. "Dela Cruz"'
-                            value={pPhone}
-                            onChange={(e) => setPPhone(e.target.value)}
-                          />
-                          <label className="student__info--center">
-                            Mobile Phone No.
-                          </label>
-                        </div>
-                        <div className="student__label--column">
-                          <input
-                            type="text"
-                            placeholder='ex. "Dela Cruz"'
-                            value={pTelPhone}
-                            onChange={(e) => setPTelPhone(e.target.value)}
-                          />
-                          <label className="student__info--center">
-                            Telephone No.
-                          </label>
+                        <div className="three__details">
+                          <div className="student__label--column">
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pZipCode}
+                              onChange={(e) => setPZipCode(e.target.value)}
+                            />
+                            <label className="student__info--center">
+                              Zip Code
+                            </label>
+                          </div>
+                          <div className="student__label--column">
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pPhone}
+                              onChange={(e) => setPPhone(e.target.value)}
+                            />
+                            <label className="student__info--center">
+                              Mobile Phone No.
+                            </label>
+                          </div>
+                          <div className="student__label--column">
+                            <input
+                              type="text"
+                              placeholder='ex. "Dela Cruz"'
+                              value={pTelPhone}
+                              onChange={(e) => setPTelPhone(e.target.value)}
+                            />
+                            <label className="student__info--center">
+                              Telephone No.
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="parents">
-                    <h3 className="details__title">Parents</h3>
+                    <h3 className="details__title">
+                      Parents <span className="required">*</span>
+                    </h3>
                     <div className="parents__info">
                       <div className="not__two--details--column">
                         <label className="parent__label label--bold">

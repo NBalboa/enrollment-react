@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../CreateContext.js";
 
-function StudentLogin({ onLogin }) {
+function StudentLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,9 +23,24 @@ function StudentLogin({ onLogin }) {
     axios
       .post("http://localhost:3000/api/student/login", admin)
       .then((res) => {
-        if (res.data.data) {
-          console.log(res.data.data);
-          onLogin(res.data.data);
+        if(res.data.errors){
+            let errorString = "";
+            res.data.errors.forEach((error) => {
+              errorString += error.msg + "\n";
+            });
+            alert(errorString);
+        }
+        else if (res.data.error) {
+          // console.log(res.data.data);
+          alert(res.data.error);
+          // onLogin(res.data.data);
+        }
+
+        if(res.data.data){
+          alert("Login Successful");
+          localStorage.setItem("currentUser", JSON.stringify(res.data.data));
+          navigate("/pre_advising");
+          // onLogin(res.data.data);
         }
       })
       .catch((err) => {

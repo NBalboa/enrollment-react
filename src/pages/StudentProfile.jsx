@@ -5,6 +5,7 @@ import "../Styles.css";
 import "../css/student_profile.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import WmsuLogo from "../assets/wmsu_logo.jpg";
 
 function StudentProfile() {
 
@@ -159,7 +160,7 @@ function StudentProfile() {
                           src={`http://localhost:3000/${profile}`}></img>
                       ) : (
                         <img
-                          src={ProfilePic}
+                          src={WmsuLogo}
                           alt="Students"
                           className="student-image"
                           width={150}

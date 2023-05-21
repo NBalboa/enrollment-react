@@ -107,7 +107,7 @@ function ListSubject() {
       <SideMenu />
       <div className="pages__container">
         <div className="pages__wrapper">
-          <Header title={"Dashboard"} />
+          <Header title={"Settings"} />
           <TopMenu />
           <div className="page__container">
             <div className="page__row">
@@ -145,9 +145,11 @@ function ListSubject() {
               <table className="subject_table">
                 <thead>
                   <tr>
+                    <th>Subject ID</th>
                     <th>Subject Code</th>
                     <th>Subject Description</th>
                     <th>Unit</th>
+                    <th>Subject Type</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

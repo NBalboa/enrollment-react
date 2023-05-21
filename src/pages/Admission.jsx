@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import SideMenu from '../components/SideMenu'
 import Header from '../components/Header'
 import "../Styles.css"
 import "../css/admission.css"
+import shortUUID from 'short-uuid'
+import axios from 'axios'
 
 
 function Admission() {
@@ -13,8 +15,8 @@ function Admission() {
     const [sy, setSy] = useState("");
     const [admissionType, setAdmissionType] = useState("Regular");
     const [enrollmentStatus, setEnrollmentStatus] = useState("Undergraduate");
-    const [program, setProgram] = useState("Bachelor of Science in Computer Science");
-    const [semester, setSemester] = useState("1st Semester");
+    const [program, setProgram] = useState("");
+    const [semester, setSemester] = useState("");
     const [studID, setStudID] = useState("");
     const [yearLevel, setYearLevel] = useState("1st");
     const [firstName, setFirstName] = useState("");
@@ -23,8 +25,8 @@ function Admission() {
     const [gender, setGender] = useState("Male");
     const [dob, setDob] = useState("");
     const [pob, setPob] = useState("");
-    const [nationality, setNationality] = useState("");
-    const [civilStatus, setCivilStatus] = useState("");
+    const [nationality, setNationality] = useState("Philippines");
+    const [civilStatus, setCivilStatus] = useState("Single");
     const [religion, setReligion] = useState("");
     const [tribe, setTribe] = useState("");
     const [disability, setDisability] = useState("");
@@ -51,9 +53,97 @@ function Admission() {
     const [guardianRelationship, setGuardianRelationship] = useState("");
     const [guardianAddress, setGuardianAddress] = useState("");
     const [guardianContact, setGuardianContact] = useState("");
+    const [countryData, setCountryData] = useState([]);
+    const [acad, setAcad] = useState([]);
+    const [sems, setSems] = useState([]);
     // #endregion
     const [errors, setErrors] = useState([]);
 
+    const [programsOpen, setProgramOpen] = useState([]);
+
+    const getProgramsOpen = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/program/get_programs_open");
+        setProgramOpen(res.data.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+
+
+    const generateID = (e) => {
+      e.preventDefault()
+
+      if(!studID){
+        const currentYear = new Date().getFullYear();
+        const lastTwoDigits = currentYear.toString().slice(-2);
+
+        const uniqueId = "ADMITTED_ID-" + shortUUID.generate() + lastTwoDigits;
+
+        setStudID(uniqueId);
+      }
+    }
+
+    const getCountries = async () => {
+
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        const countryData = await response.json();
+        setCountryData(countryData);
+
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+
+    
+
+    const getOpenAcademicYear = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/enrollment/get_enrollment_open");
+        setAcad(res.data.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+
+    const handleAcadYear = (e) => {
+      e.preventDefault();
+      setSy(e.target.value);
+
+      getSemOpen(e.target.value);
+
+    }
+    const getSemOpen = async (ay) => {
+      if(ay === ""){
+        setSems([]);
+        setSemester("");
+        return;
+      } 
+      try {
+        const res = await axios.get("http://localhost:3000/api/enrollment/get_sem_open/" + ay);
+        console.log(res.data.data);
+        setSems(res.data.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+
+    // useEffect(() => {
+    // }, [])
+
+    useEffect(() => {
+      getCountries();
+      getOpenAcademicYear();
+      getProgramsOpen();
+    }, [])
+
+    // useEffect(() => { 
+    // }, [])
 
     const handleHide = (e) => {
       setHide(e.target.checked);
@@ -76,7 +166,6 @@ function Admission() {
 
     const handleAdmit = (e) => {
       e.preventDefault()
-      console.log("Profile " + profile);
       let convertedDob = ""
       if(dob){
         convertedDob = new Date(dob)
@@ -110,7 +199,6 @@ function Admission() {
       formData.append("current_telphone", cTelPhone);
 
       if(hide){
-        console.log("same")
         formData.append("permanent_street", cStreet);
         formData.append("permanent_barangay", cBarangay);
         formData.append("permanent_province", cProvince);
@@ -119,7 +207,6 @@ function Admission() {
         formData.append("permanent_telphone", cTelPhone);
       }
       else{
-        console.log("not same")
         formData.append("permanent_street", pStreet);
         formData.append("permanent_barangay", pBarangay);
         formData.append("permanent_province", pProvince);
@@ -190,11 +277,23 @@ function Admission() {
                       <p className="colleges">College of WMSU PAGADIAN</p>
                       <label className="official__input">
                         School Year:
-                        <input
+                        <select
+                          style={{ padding: "4px 12px", marginLeft: "8px" }}
+                          value={sy}
+                          onChange={handleAcadYear}
+                        >
+                          <option value="">Select School Year</option>
+                          {acad.map((acad) => (
+                            <option key={acad.id} value={acad.ay}>
+                              {acad.ay}
+                            </option>
+                          ))}
+                        </select>
+                        {/* <input
                           type="text"
                           value={sy}
                           onChange={(e) => setSy(e.target.value)}
-                        />
+                        /> */}
                       </label>
                       <div className="student__profile--admission">
                         <img
@@ -242,26 +341,29 @@ function Admission() {
                           value={program}
                           onChange={(e) => setProgram(e.target.value)}
                         >
-                          <option value="Bachelor of Science in Computer Science">
-                            Bachelor of Science in Computer Science
-                          </option>
-                          <option value="Bachelor of Science in Social Work">
-                            Bachelor of Science in Social Work
-                          </option>
-                          <option value="Bachelor of Science in Criminology">
-                            Bachelor of Science in Criminology
-                          </option>
+                          <option value="">SELECT PROGRAM</option>
+
+                          {programsOpen.map((program) => (
+                            <option key={program.id} value={program.program}>
+                              {program.program}
+                            </option>
+                          ))}
                         </select>
                       </div>
                       <div className="semestral">
                         <label>Semester</label>
+                        {/* <input type='text' value={semester} disabled/> */}
                         <select
                           id="sem"
                           value={semester}
                           onChange={(e) => setSemester(e.target.value)}
                         >
-                          <option value="1st Semester">1st Semester</option>
-                          <option value="2nd Semester">2nd Semester</option>
+                          <option value="">Select Semester</option>
+                          {sems.map((sem) => (
+                            <option key={sem.id} value={sem.sem}>
+                              {sem.sem}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -273,6 +375,13 @@ function Admission() {
                           value={studID}
                           onChange={(e) => setStudID(e.target.value)}
                         />
+                        <button
+                          className="btn-gen"
+                          onClick={generateID}
+                          value={studID}
+                        >
+                          Generate ID
+                        </button>
                       </label>
                       <div className="student__select">
                         <label>Year Level</label>
@@ -315,7 +424,7 @@ function Admission() {
                         </div>
                         <div className="student__label--column">
                           <label className="student__info--admission">
-                            Middle Name <span className="required">*</span>
+                            Middle Name (optional)
                           </label>
                           <input
                             type="text"
@@ -365,40 +474,104 @@ function Admission() {
                           <label className="student__info--admission">
                             Nationality <span className="required">*</span>
                           </label>
-                          <input
+                          <select
+                            onChange={(e) => setNationality(e.target.value)}
+                            value={nationality}
+                          >
+                            {countryData.map((country) => (
+                              <option
+                                key={shortUUID.generate()}
+                                value={country.name.common}
+                              >
+                                {country.name.common}
+                              </option>
+                            ))}
+                          </select>
+
+                          {/* <input
                             type="text"
                             placeholder='ex. "Filipino"'
                             value={nationality}
                             onChange={(e) => setNationality(e.target.value)}
-                          />
+                          /> */}
                         </div>
                         <div className="student__label--column">
                           <label className="student__info--admission">
                             Civil Status <span className="required">*</span>
                           </label>
-                          <input
+                          <select
+                            onChange={(e) => setCivilStatus(e.target.value)}
+                            value={civilStatus}
+                          >
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Separated">Separated</option>
+                          </select>
+                          {/* <input
                             type="text"
                             placeholder='ex. "Single/Married"'
                             value={civilStatus}
                             onChange={(e) => setCivilStatus(e.target.value)}
-                          />
+                          /> */}
                         </div>
                         <div className="student__label--column">
-                          <label className="student__info--admission">
-                            Religion <span className="required">*</span>
+                          <label
+                            htmlFor="religion"
+                            className="student__info--admission"
+                          >
+                            Religion (optional)
                           </label>
+                          <input
+                            list="religions"
+                            name="religion"
+                            id="religion"
+                            value={religion}
+                            onChange={(e) => setReligion(e.target.value)}
+                          />
+                          <datalist id="religions">
+                            <option value="Roman Catholic" />
+                            <option value="Islam" />
+                            <option value="Iglesia ni Cristo" />
+                            <option value="Protestant" />
+                            <option value="Buddhism" />
+                            <option value="Jehovah's Witness" />
+                            <option value="Seventh Day Adventist" />
+                            <option value="Born Again Christian" />
+                            <option value="Aglipayan" />
+                            <option value="Baptist" />
+                            <option value="Methodist" />
+                            <option value="Mormon" />
+                            <option value="Pentecostal" />
+                            <option value="Judaism" />
+                            <option value="Hinduism" />
+                            <option value="Atheism" />
+                          </datalist>
+                          {/* <label
+                            for="religion"
+                            className="student__info--admission"
+                          >
+                            Religion
+                          </label>
+
                           <input
                             type="text"
                             placeholder='ex. "Roman Catholic"'
                             value={religion}
                             onChange={(e) => setReligion(e.target.value)}
+                            id="religion"
+                            list="religion"
                           />
+
+                          <datalist id="religion">
+                            
+                          </datalist> */}
                         </div>
                       </div>
                       <div className="three__details">
                         <div className="student__label--column">
                           <label className="student__info--admission">
-                            Ethnicity/Tribe <span className="required">*</span>
+                            Ethnicity/Tribe (optional)
                           </label>
                           <input
                             type="text"
@@ -709,7 +882,9 @@ function Admission() {
                     <input
                       type="submit"
                       value="Admit"
-                      className="red__btn--right"
+                      className={`btn btn-danger float-end mt-3 ${
+                        !semester || !sy || !program ?  "disabled" : ""
+                      }`}
                     />
                   </div>
                 </form>

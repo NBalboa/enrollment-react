@@ -9,6 +9,7 @@ function UpdateSubject() {
   const [subjectCode, setSubjectCode] = useState("");
   const [subjectDescription, setSubjectDescription] = useState("");
   const [unit, setUnit] = useState("");
+  const [subjectID, setSubjectID] = useState("");
 
   const {id} = useParams();
 
@@ -21,6 +22,7 @@ function UpdateSubject() {
         setSubjectCode(subject.subject_code);
         setSubjectDescription(subject.subject_description);
         setUnit(subject.unit);
+        setSubjectID(subject.subject_id);
 
     } catch (err) {
         console.log(err);
@@ -31,6 +33,7 @@ function UpdateSubject() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const subject = {
+            subject_id: subjectID,
             subject_code: subjectCode,
             subject_description: subjectDescription,
             unit: unit,
@@ -39,6 +42,7 @@ function UpdateSubject() {
         try {
             const res = await axios.put(`http://localhost:3000/api/subject/update_subject/${id}`, subject);
             console.log(res.data);
+            alert("Subject Updated Successfully")
         } catch (err) {
             console.log(err);
         }
@@ -79,6 +83,18 @@ function UpdateSubject() {
               <div className="container">
                 <h3 className="text-center mt-5 mb-4">Update Subject</h3>
                 <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="subject-code" className="form-label">
+                      Subject ID
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="subject-code"
+                      value={subjectID}
+                      onChange={(e) => setSubjectID(e.target.value)}
+                    />
+                  </div>
                   <div className="mb-3">
                     <label htmlFor="subject-code" className="form-label">
                       Subject Code

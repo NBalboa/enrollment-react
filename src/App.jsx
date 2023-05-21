@@ -22,46 +22,13 @@ import AboutDeveloper from "./pages/AboutDeveloper";
 // import AboutCompany from "./pages/AboutCompany";
 
 import AboutCompany from "./pages/AboutCompany";
+import Enrollment from "./pages/Enrollment";
+
+
+import AddProgam from "./pages/AddProgam";
+import ListProgram from "./pages/ListProgram";
 
 function App() {
-  const navigate = useNavigate();
-
-  // const [currentUser, setCurrentUser] = useState("");
-
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem("currentUser");
-  //   if (storedUser) {
-  //     setCurrentUser(JSON.parse(storedUser));
-  //   }
-  // }, []);
-
-  // function handleLogin(user) {
-  //   // console.log(user);
-  //   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-  //   console.log(currentUser.role);
-
-    
-  //   if(currentUser && currentUser.role === "admin"){
-  //     navigate("/")
-  //   }
-    
-  //   if(currentUser && currentUser.role === "student"){
-  //     navigate("/pre_advising")
-  //   }
-
-  //   // if (!currentUser.role && currentUser.role === "admin") {
-  //   //   // console.log("admin");
-  //   //   navigate("/");
-  //   // }
-
-  //   // if(!currentUser.role && currentUser.role === 'student'){
-  //   //   navigate('/pre_advising')
-  //   // }
-
-  //   // console.log(user);
-  //   // setCurrentUser(user);
-  // }
 
   return (
     <div>
@@ -88,6 +55,10 @@ function App() {
         />
         <Route path="/settings/list_subject" element={<ListSubject />} />
         <Route path="/settings/add_subject" element={<AddSubject />} />
+
+        <Route path="/settings/add_program" element={<AddProgam />} />
+        <Route path="/settings/list_program" element={<ListProgram />} />
+
         <Route
           path="/settings/update_subject/:id"
           element={<UpdateSubject />}
@@ -102,6 +73,7 @@ function App() {
           path="/settings/about_company"
           element={<AboutCompany />}
         />
+        <Route path="/settings/enrollment" element={<Enrollment/>}/>
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </div>

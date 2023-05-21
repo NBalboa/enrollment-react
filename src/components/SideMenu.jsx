@@ -43,6 +43,9 @@ function SideMenu() {
         if(!currentUser){
           navigate("/admin_login");
         }
+        else if(currentUser.role !== "admin"){
+          navigate("/student_login");
+        }
         else{
           const adminDetails = currentUser;
           setAdminProfile(currentUser.profile)

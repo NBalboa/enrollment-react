@@ -92,7 +92,7 @@ function Settings() {
       <SideMenu />
       <div className="pages__container">
         <div className="pages__wrapper">
-          <Header title={"Dashboard"} />
+          <Header title={"Settings"} />
           <TopMenu />
           <div className="page__container">
             <div className="page__row">

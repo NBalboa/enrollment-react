@@ -1,4 +1,4 @@
-.page__row--company {
+/* .page__row--company {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -19,4 +19,29 @@
   .image__container img {
     width: 80%;
   }
-  
+   */
+
+
+.company__title {
+  text-align: center;
+  font-size: 36px;
+}
+
+.company__img {
+  height: 300px;
+  width: 100%;
+  max-width: 300px;
+  margin: 24px auto;
+}
+
+.company__img img {
+  width: 100%;
+}
+
+.company__desc-h {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 200px;
+}

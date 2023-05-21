@@ -16,6 +16,20 @@ function Student() {
     const [keyword, setKeyword] = useState("");
 
     const [currentPage, setCurrentPage] = useState(0);
+
+    const [studentDenomination, setStudentDenomination] = useState([]);
+
+
+    const handleDeno = async function() {
+        const { data } = await axios.get(
+          "http://localhost:3000/api/student/student_denomination"
+        );
+        console.log(data.data);
+        setStudentDenomination(data.data);
+    }
+
+
+
     const handlePageChange = ({ selected }) => {
       setCurrentPage(selected);
     };
@@ -91,6 +105,7 @@ function Student() {
 
     useEffect(() => {
         handleData();
+        handleDeno();
     }, []);
 
 
@@ -155,9 +170,9 @@ function Student() {
                   <a
                     className="btn btn-success"
                     href="http://localhost:3000/api/student/data"
-                    target='_blank'
+                    target="_blank"
                   >
-                    Download
+                    Download All
                   </a>
                   <div className="d-flex justify-content-center">
                     <ReactPaginate
@@ -175,6 +190,51 @@ function Student() {
                     />
                   </div>
                 </div>
+                <h2>Student Downloads</h2>
+
+                <table className="table table-primary table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Program</th>
+                      <th scope="col">Academic Year</th>
+                      <th scope="col">Semester</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Total Male</th>
+                      <th scope="col">Total Female</th>
+                      <th scope="col">Total First Year</th>
+                      <th scope="col">Total Second Year</th>
+                      <th scope="col">Total Third Year</th>
+                      <th scope="col">Total Fourth Year</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentDenomination.map((deno) => (
+                      <tr key={deno.id}>
+                        <td>{deno.program}</td>
+                        <td>{deno.sy}</td>
+                        <td>{deno.semester}</td>
+                        <td>{deno.total}</td>
+                        <td>{deno.male}</td>
+                        <td>{deno.female}</td>
+                        <td>{deno.first_year}</td>
+                        <td>{deno.second_year}</td>
+                        <td>{deno.third_year}</td>
+                        <td>{deno.fourth_year}</td>
+                        <td>
+                          <a
+                            className="btn btn-success"
+                            target="_blank"
+                            href={`http://localhost:3000/api/student/data/${deno.sy}/${deno.semester}/${deno.program}`}
+                          >
+                            Download
+                          </a>
+                          {/* <button className="btn btn-success">Download</button> */}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

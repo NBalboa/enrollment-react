@@ -60,6 +60,19 @@ function UpdateForm() {
 
   const [data, setData] = useState([]);
 
+    const [programsOpen, setProgramOpen] = useState([]);
+
+    const getProgramsOpen = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/program/get_programs_open"
+        );
+        setProgramOpen(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   const {id} = useParams();
 
       const handleHide = (e) => {
@@ -128,6 +141,7 @@ function UpdateForm() {
             setUsername('');
             setPassword('');
         }
+        
         // console.log(student)
     }
     catch(e){
@@ -137,6 +151,7 @@ function UpdateForm() {
 
   useEffect(() => {
     handleData();
+    getProgramsOpen();
   }, [])
 
   // const handleHide = (e) => {
@@ -239,6 +254,8 @@ function UpdateForm() {
           // console.log(res.data.data);
           handleData();
         });
+
+        return;
     }
     else if(password === confirmPassword){
       formData.append("username", username);
@@ -250,11 +267,23 @@ function UpdateForm() {
     }
     
 
-    await axios.put(`http://localhost:3000/api/admission/update/${id}`, formData)
-    .then((res) => {
-        // console.log(res.data.data)
+    await axios
+      .put(`http://localhost:3000/api/admission/update/${id}`, formData)
+      .then((res) => {
+        // console.log(res.data.errors);
+        if (res.data.errors) {
+          let errorString = "";
+          res.data.errors.forEach((error) => {
+            errorString += error.msg + "\n";
+          });
+          alert(errorString);
+        } else {
+          alert(res.data.data);
+        }
+
+        // console.log(res.data.data);
         handleData();
-    })
+      });
 
     // fetch(`http://localhost:3000/api/admission/update/${id}`, {
     //   method: "PUT",
@@ -270,7 +299,7 @@ function UpdateForm() {
       <SideMenu />
       <div className="pages__container">
         <div className="pages__wrapper">
-          <Header title={"Admission"} />
+          <Header title={"Update Form"} />
           <div className="page__container">
             <div className="page__row">
               <h1 className="admission__title">
@@ -291,20 +320,19 @@ function UpdateForm() {
                     <p className="colleges">College of WMSU PAGADIAN</p>
                     <label className="official__input">
                       School Year:
-                      <input
-                        type="text"
-                        value={sy}
-                        onChange={(e) => setSy(e.target.value)}
-                      />
+                      <input type="text" value={sy} disabled />
                     </label>
                     <div className="student__profile--admission">
-                      {profile === null ? (
+                      {profile && profile !== "http://localhost:3000/" ? (
                         <img
                           className="student__photo--admission"
                           src={`http://localhost:3000/${currentProfile}`}
                         />
                       ) : (
-                        <img className="student__photo--admission" src={profile} />
+                        <img
+                          className="student__photo--admission"
+                          src={profile}
+                        />
                       )}
                       <input
                         type="file"
@@ -347,27 +375,31 @@ function UpdateForm() {
                         value={program}
                         onChange={(e) => setProgram(e.target.value)}
                       >
-                        <option value="Bachelor of Science in Computer Science">
-                          Bachelor of Science in Computer Science
-                        </option>
-                        <option value="Bachelor of Science in Social Work">
-                          Bachelor of Science in Social Work
-                        </option>
-                        <option value="Bachelor of Science in Criminology">
-                          Bachelor of Science in Criminology
-                        </option>
+                        <option value="">SELECT PROGRAM</option>
+
+                        {programsOpen.map((program) => (
+                          <option key={program.id} value={program.program}>
+                            {program.program}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className="semestral">
                       <label>Semester</label>
-                      <select
+                      <input
+                        type="text"
+                        value={semester}
+                        disabled
+                        className="p-1"
+                      />
+                      {/* <select
                         id="sem"
                         value={semester}
                         onChange={(e) => setSemester(e.target.value)}
                       >
                         <option value="1st Semester">1st Semester</option>
                         <option value="2nd Semester">2nd Semester</option>
-                      </select>
+                      </select> */}
                     </div>
                   </div>
                   <div className="student__more">
@@ -420,7 +452,7 @@ function UpdateForm() {
                       </div>
                       <div className="student__label--column">
                         <label className="student__info--admission">
-                          Middle Name <span className="required">*</span>
+                          Middle Name (optional)
                         </label>
                         <input
                           type="text"
@@ -489,21 +521,52 @@ function UpdateForm() {
                         />
                       </div>
                       <div className="student__label--column">
-                        <label className="student__info--admission">
-                          Religion <span className="required">*</span>
+                        <label
+                          htmlFor="religion"
+                          className="student__info--admission"
+                        >
+                          Religion (optional)
+                        </label>
+                        <input
+                          list="religions"
+                          name="religion"
+                          id="religion"
+                          value={religion}
+                          onChange={(e) => setReligion(e.target.value)}
+                        />
+                        <datalist id="religions">
+                          <option value="Roman Catholic" />
+                          <option value="Islam" />
+                          <option value="Iglesia ni Cristo" />
+                          <option value="Protestant" />
+                          <option value="Buddhism" />
+                          <option value="Jehovah's Witness" />
+                          <option value="Seventh Day Adventist" />
+                          <option value="Born Again Christian" />
+                          <option value="Aglipayan" />
+                          <option value="Baptist" />
+                          <option value="Methodist" />
+                          <option value="Mormon" />
+                          <option value="Pentecostal" />
+                          <option value="Judaism" />
+                          <option value="Hinduism" />
+                          <option value="Atheism" />
+                        </datalist>
+                        {/* <label className="student__info--admission">
+                          Religion 
                         </label>
                         <input
                           type="text"
                           placeholder='ex. "Roman Catholic"'
                           value={religion}
                           onChange={(e) => setReligion(e.target.value)}
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div className="three__details">
                       <div className="student__label--column">
                         <label className="student__info--admission">
-                          Ethnicity/Tribe <span className="required">*</span>
+                          Ethnicity/Tribe (optional)
                         </label>
                         <input
                           type="text"

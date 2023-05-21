@@ -4,34 +4,20 @@ import WmsuLogo from "../assets/wmsu_logo.jpg";
 import SubjectModal from "../components/SubjectModal";
 import StudentTopNav from "../components/StudentTopNav";
 import { useNavigate, Link } from "react-router-dom";
-
+import axios from "axios";
 
 function PreAdvisingForm() {
   const [studentId, setStudentId] = useState("");
-  const [semester, setSemester] = useState("");
+  const [semester, setSemester] = useState("1");
   const [schoolYear, setSchoolYear] = useState("");
-  const [yearLevel, setYearLevel] = useState("");
+  const [yearLevel, setYearLevel] = useState("1");
   const [studentName, setStudentName] = useState("");
   const [program, setProgram] = useState("");
   const [profile, setProfile] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [keys, setKeys] = useState([]);
 
   const navigate = useNavigate();
-  const printRef = useRef();
-
-  const handlePrint = () => {
-    // const printWindow = window.open("Hi", "PRINT", "height=400,width=600");
-
-    // printWindow.document.write("<html><head><title>Print</title>");
-   
-    // printWindow.document.write("</head><body>");
-    // printWindow.document.write(printRef.current.innerHTML);
-    // printWindow.document.write("</body></html>");
-    // printWindow.document.close();
-    // printWindow.focus();
-    // printWindow.print();
-    // printWindow.close();
-    window.print();
-  };
 
   const handleSubjectExist = () => {
     const selectedSubject = JSON.parse(localStorage.getItem("selectSubject"));
@@ -46,7 +32,7 @@ function PreAdvisingForm() {
 
     if (currentUser) {
       const studentDetails = currentUser;
-      console.log(studentDetails.program)
+      // console.log(studentDetails.program)
       setStudentName(
         `${studentDetails.last_name}, ${studentDetails.first_name} ${studentDetails.middle_name[0]}.`
       );
@@ -59,6 +45,52 @@ function PreAdvisingForm() {
     }
   };
 
+
+  const getSubjectHistory = async () => {
+    const current = JSON.parse(localStorage.getItem("currentUser"));
+
+    if(current) {
+      const id = current.id;
+  
+      try {
+  
+        const { data } = await axios.get(
+          `http://localhost:3000/api/subject/get_subjects_history/${id}`
+        );
+  
+          const separatedByDate = data.data.reduce((result, item) => {
+            const date = item.created_at; // Extracting date from created_at field
+  
+            if (!result[date]) {
+              result[date] = [];
+            }
+  
+            result[date].push(item);
+            return result;
+          }, {});
+  
+  
+        Object.entries(separatedByDate).forEach(([key, value]) => {
+          // console.log("keys", key)
+          // if(!keys.includes(key)){
+           setKeys((prev) => {
+             if (!prev.includes(key)) {
+               const updateKeys = [...prev, key];
+               return updateKeys;
+             }
+             return prev;
+           });
+          // }
+        });
+        setHistory(separatedByDate);
+        // console.log(separatedByDate);
+        // console.log(keys)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+  }
 
   const [selectedSubject, setSelectedSubject] = useState([]);
 
@@ -78,23 +110,29 @@ function PreAdvisingForm() {
       localStorage.setItem("semester", semester);
       localStorage.setItem("schoolYear", schoolYear);
       localStorage.setItem("yearLevel", yearLevel);
-      console.log(selectedSubject);
     } else {
-      alert(`Subject with id ${subject.id} is already selected`);
+      alert(`Subject is already selected`);
     }
   };
 
   const handleDeleteSubject = (subject) => {
-    const newSelectedSubject = selectedSubject.filter(
+    const subs = JSON.parse(localStorage.getItem("selectSubject"));
+    const newSelectedSubject = subs.filter(
       (s) => s.id !== subject.id
     );
-    setSelectedSubject(newSelectedSubject);
+    setSelectedSubject(prev => {
+      const updateSelectedSubject = [...newSelectedSubject];
+      localStorage.setItem("selectSubject", JSON.stringify(updateSelectedSubject));
+      return updateSelectedSubject;
+    });
   };
 
   useEffect(() => {
     handleCurrentUser();
     handleSubjectExist();
+    getSubjectHistory();
   }, []);
+
 
   return (
     <div>
@@ -102,7 +140,7 @@ function PreAdvisingForm() {
       <h3 className="text-center mt-3">Pre-Advising Form</h3>
       <div className="student__details">
         <div className="student___profile">
-          {profile ? (
+          {profile !== "http://localhost:3000/" && profile ? (
             <img src={profile} alt="Profile" />
           ) : (
             <img src={WmsuLogo} alt="WMSU Logo" />
@@ -118,11 +156,18 @@ function PreAdvisingForm() {
               </div>
               <div className="two_input-group">
                 <label>Semester</label>
-                <input
+                <select
+                  value={semester}
+                  onChange={(e) => setSemester(e.target.value)}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+                {/* <input
                   type="text"
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
-                />
+                /> */}
               </div>
             </div>
             <div className="two_input">
@@ -136,11 +181,20 @@ function PreAdvisingForm() {
               </div>
               <div className="two_input-group">
                 <label>Level</label>
-                <input
+                <select
+                  value={yearLevel}
+                  onChange={(e) => setYearLevel(e.target.value)}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+                {/* <input
                   type="text"
                   value={yearLevel}
                   onChange={(e) => setYearLevel(e.target.value)}
-                />
+                /> */}
               </div>
             </div>
             <div className="one_input">
@@ -162,16 +216,18 @@ function PreAdvisingForm() {
             <th>Subject Code</th>
             <th>Subject Description</th>
             <th>Units</th>
+            <th>Subject Type</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {selectedSubject.map((subject) => (
             <tr key={subject.id}>
-              <td>{subject.id}</td>
+              <td>{subject.subject_id}</td>
               <td>{subject.subject_code}</td>
               <td>{subject.subject_description}</td>
               <td>{subject.unit}</td>
+              <td>{subject.type}</td>
               <td>
                 <button
                   className="delete__btn"
@@ -196,13 +252,54 @@ function PreAdvisingForm() {
         <Link
           to={`/print_advising/${semester}/${schoolYear}/${yearLevel}`}
           className={`btn btn-success ${
-            (!yearLevel || !schoolYear || !semester) && "disabled"
+            (!yearLevel ||
+              !schoolYear ||
+              !semester ||
+              selectedSubject.length < 1) &&
+            "disabled"
           }`}
         >
           Preview
         </Link>
         {/* <Link to={`/print_advising/${semester}/${schoolYear}/${yearLevel}`}>Preview</Link> */}
         <SubjectModal onAddSubject={handleAddSubject} />
+      </div>
+      <div className="buttons__subject-left">
+        <h2>History</h2>
+        {/* {subjectTable()} */}
+        {/* {history[keys[0]][0].created_at} */}
+
+        <div className="history">
+          {keys.map((key, index) => (
+            <div key={index}>
+                <p> Academic Year: {history[key][0].ay}</p>
+                <p> Semester: {history[key][0].sem}</p>
+                <p> Year Level: {history[key][0].level}</p>
+                <table className="student_table">
+                  <thead>
+                    <tr>
+                      <th>Subject ID</th>
+                      <th>Subject Code</th>
+                      <th>Subject Description</th>
+                      <th>Units</th>
+                      <th>Subject Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {history[key].map((subject) => (
+                      <tr key={subject.id}>
+                        <td>{subject.subject_id}</td>
+                        <td>{subject.subject_code}</td>
+                        <td>{subject.subject_description}</td>
+                        <td>{subject.unit}</td>
+                        <td>{subject.type}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

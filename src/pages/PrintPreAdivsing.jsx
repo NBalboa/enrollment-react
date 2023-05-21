@@ -3,6 +3,8 @@ import "../css/pre_advising.css";
 import { useNavigate, useParams } from "react-router-dom";
 import StudentTopNav from '../components/StudentTopNav';
 import { Link } from 'react-router-dom';
+import RedForm  from '../components/RedForm';
+import axios from 'axios';
 
 function PrintPreAdivsing() {
     
@@ -17,6 +19,51 @@ function PrintPreAdivsing() {
     const navigate = useNavigate();
     const {sem, sy, yl} = useParams();
 
+    const saveSubjectEnrolled = async () => {
+
+        const date = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+        // date_now = date = new Date().toISOString().slice(0, 19).replace("T", " ");
+        const subject = JSON.parse(localStorage.getItem("selectSubject"));
+        const current = JSON.parse(localStorage.getItem("currentUser"));
+
+
+        const saveSubject = subject.map((item) => {
+          return [
+              item.id,
+              current.id,
+              sem,
+              sy,
+              yl,
+              date,
+              date
+          ]
+        })
+
+        const save = {
+          test_values : saveSubject
+        }
+
+        try {
+          const { data }  = await axios.post(
+            "http://localhost:3000/api/subject/add_subjects_history",
+            save
+          );
+          alert(data.data)
+        }catch(err){
+          console.log(err)
+        }
+    }
+
+    // alert(sy)
+
+    const studentDetails  = {
+      semester: sem,
+      schoolYear: sy,
+      yearLevel: yl,
+      program: program
+    }
+
     const handlePrint = () => {
         window.print();
     }
@@ -27,7 +74,7 @@ function PrintPreAdivsing() {
             alert("Please select a subject first")
             navigate("/pre_advising");
         }
-        console.log(selectedSubject)
+        // console.log(selectedSubject)
         setSelectedSubject(selectedSubject);
     }
     const handleCurrentUser = () => {
@@ -37,7 +84,7 @@ function PrintPreAdivsing() {
 
       if (currentUser) {
         const studentDetails = currentUser;
-        console.log(studentDetails.program);
+        // console.log(studentDetails.program);
         setStudentName(
           `${studentDetails.last_name}, ${studentDetails.first_name} ${studentDetails.middle_name[0]}.`
         );
@@ -57,70 +104,38 @@ function PrintPreAdivsing() {
   return (
     <div className="preview__container">
       <div className="preview__print">
-        <div className="header">
-          <div className="header__info">
-            <h3>Western Mindanao State University</h3>
-            <h4>College of Pagadian</h4>
-            <h5>Pre-Advising Form</h5>
-          </div>
+        <div className="column-twice" style={{ marginTop: "20px" }}>
+          <RedForm
+            copyOf={"Student"}
+            subject={selectedSubject}
+            studentName={studentName}
+            studentId={studentId}
+            studentDetails={studentDetails}
+          />
+          <p className="liner"></p>
+          <RedForm
+            copyOf={"Dean"}
+            subject={selectedSubject}
+            studentName={studentName}
+            studentId={studentId}
+            studentDetails={studentDetails}
+          />
         </div>
-
-        <div className="student__information">
-          <div className="preview">
-            <div className="one_input">
-              <p>Student Name</p>
-              <p className="text-bold">{studentName}</p>
-            </div>
-            <div className="one_input">
-              <p>Program</p>
-              <p className="text-bold">{program}</p>
-            </div>
-            <div className="two_input">
-              <div className="two_input-group">
-                <p>Student ID</p>
-                <p className="text-bold">{studentId}</p>
-              </div>
-              <div className="two_input-group">
-                <p>Semester</p>
-                <p className="text-bold">{sem}</p>
-              </div>
-            </div>
-            <div className="two_input">
-              <div className="two_input-group">
-                <p>School Year</p>
-                <p className="text-bold">{sy}</p>
-              </div>
-              <div className="two_input-group">
-                <p>Level</p>
-                <p className="text-bold">{yl}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <table className="student_table">
-          <thead>
-            <tr>
-              <th>Subject ID</th>
-              <th>Subject Code</th>
-              <th>Subject Description</th>
-              <th>Units</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selectedSubject.map((subject) => (
-              <tr key={subject.id}>
-                <td>{subject.id}</td>
-                <td>{subject.subject_code}</td>
-                <td>{subject.subject_description}</td>
-                <td>{subject.unit}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button className="btn btn-primary print_button mt-4 me-2" onClick={handlePrint}>
+        <button
+          className="btn btn-primary print_button mt-4 me-2"
+          onClick={handlePrint}
+        >
           Print
         </button>
-        <Link to="/pre_advising" className="btn btn-primary print_button mt-4">Home</Link>
+        <button
+          className="btn btn-primary print_button mt-4 me-2"
+          onClick={saveSubjectEnrolled}
+        >
+          Save
+        </button>
+        <Link to="/pre_advising" className="btn btn-primary print_button mt-4">
+          Home
+        </Link>
       </div>
     </div>
   );

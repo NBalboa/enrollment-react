@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.column-twice {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 20px;
+}
+
+.red_form_table {
+    width: 100%;
+    color: red;
+}
+
+.bold {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+
+.red_form_table tbody tr, .red_form_table tbody td {
+    border: 2px solid crimson;
+}
+
+.red_form_table thead td {
+    padding: 5px 8px;
+}
+
+
+.red_form_table thead {
+    border-left: 2px solid crimson;
+    border-top: 2px solid crimson;
+    border-right: 2px solid crimson;
+    /* background-color: red; */
+}
+
+.red_form_table tbody td {
+    padding: 0 2px;
+    font-size: 13px;
+}
+
+.red_form_table td {
+    padding: 4px 4px;
+}
+
+.red_form_table tfoot {
+    border: none;
+    border-bottom: 2px solid crimson;
+    border-left: 2px solid crimson;
+    border-right: 2px solid crimson;
+    padding: 2px 2px;
+    font-size: 13px;
+}
+
+.naay-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.naay-logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.naay-logo h6 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.test {
+    padding: 0;
+    margin: 0;
+}
+
+.liner {
+    border-top: 4px dashed crimson;
+}

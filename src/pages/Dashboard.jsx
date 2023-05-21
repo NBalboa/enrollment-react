@@ -13,7 +13,8 @@ function Dashboard() {
     const [total, setTotal] = useState(0);
     const [male, setMale] = useState(0);
     const [female, setFemale] = useState(0);
-
+    const [academic, setAcademic] = useState([]);
+    const [sy, setSy] = useState("all");
 
     const handleCount = async function() {
         const { data } = await axios.get(
@@ -34,28 +35,98 @@ function Dashboard() {
         setData(data);
     }
 
-     const handleDelete = async function (id) {
-       const { data } = await axios.delete(
-         `http://localhost:3000/api/admission/delete/${id}`
-       );
-      //  console.log(data);
-       handleData();
-     };
+    const academicYear = async function() {
+      try {
+
+        const { data } = await axios.get(
+          "http://localhost:3000/api/student/academic_year"
+        );
+        console.log(data.data)
+        setAcademic(data.data);
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+
+    const handleStudentFilterByYear = async function (e) {
+      e.preventDefault();
+      setSy(e.target.value)
+      const value = e.target.value.split(",")
+
+      if (e.target.value === "all") {
+        handleData();
+        handleCount();
+        return;
+      }
+      const { data } = await axios.get(
+        `http://localhost:3000/api/student/filter_by_year/${value[0]}/${value[1]}`
+      );
+
+      // const value = e.target.value.split(",")
+      filterCount(value[0], value[1])
+      setData(data.data);
+    };
+
+    const filterCount = async (year, sem) => {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/student/count/${year}/${sem}`
+      );
+
+      console.log(data.data)
+
+      const details = data.data[0]
+      //   console.log(details);
+      setTotal(details.total);
+      setMale(details.male);
+      setFemale(details.Female);
+
+    }
+
+    const handleDelete = async function (id) {
+      const userChoice = window.confirm(
+        "Are you sure you want to delete this student?"
+      );
+
+      if (userChoice) {
+        const { data } = await axios.delete(
+          `http://localhost:3000/api/admission/delete/${id}`
+        );
+      }
+
+      // console.log(data);
+      handleData();
+    };
 
 
     useEffect(() => {
         handleCount();
         handleData();
+        academicYear();
     }, [])
 
     return (
       <div id="menu__container">
-        <SideMenu/>
+        <SideMenu />
         <div className="pages__container">
           <div className="pages__wrapper">
             <Header title={"Dashboard"} />
             <div className="page__container">
               <div className="page__row">
+                <h3>Select Academic Year</h3>
+                <select
+                  className="form-select form-select-lg mb-3"
+                  aria-label=".form-select-lg example"
+                  value={sy}
+                  onChange={handleStudentFilterByYear}
+                >
+                  <option value="all">All</option>
+                  {academic.map((academic) => (
+                    <option key={academic.id} value={`${academic.sy},${academic.semester}`}>
+                      {academic.sy}, {academic.semester}{academic.semester === "1" ? "st": "nd"} Semester
+                    </option>
+                  ))}
+                </select>
                 <div className="cards__container">
                   <div className="card bg-c-green order-card">
                     <div className="card-block">
@@ -103,7 +174,13 @@ function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map(student => <Students key={student.id} data={student} handleDelete={handleDelete} />)}
+                        {data.map((student) => (
+                          <Students
+                            key={student.id}
+                            data={student}
+                            handleDelete={handleDelete}
+                          />
+                        ))}
                       </tbody>
                     </table>
                   </div>

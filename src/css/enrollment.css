@@ -1,0 +1,25 @@
+.academic_form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+
+}
+
+.academic_form input[type="text"] {
+    padding: 8px 16px;
+}
+
+.academic_form input[type="submit"]{
+    display: block;
+    margin-top: 10px;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    background-color: red;
+    color: white;
+}
+.academic_form input[type="submit"]:hover{
+    opacity: 0.8;
+}

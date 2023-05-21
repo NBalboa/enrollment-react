@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 function Subjects({data, onDelete}) {
   return (
     <tr>
+      <td>{data.subject_id}</td>
       <td>{data.subject_code}</td>
       <td>{data.subject_description}</td>
       <td>{data.unit}</td>
+      <td>{data.type}</td>
       <td>
         <Link
           to={`/settings/update_subject/${data.id}`}

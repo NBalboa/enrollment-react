@@ -21,7 +21,7 @@ function SubjectModal({onAddSubject}) {
     const startIndex = currentPage * itemsPerPage;
     const selectedItems = data.slice(startIndex, startIndex + itemsPerPage);
 
-    console.log(selectedItems);
+    // console.log(selectedItems);
 
       const handleSearch = async (e) => {
     e.preventDefault();
@@ -58,7 +58,7 @@ function SubjectModal({onAddSubject}) {
           const { data } = await axios.get(
             "http://localhost:3000/api/subject/list_subjects"
           );
-          console.log(data.data);
+          // console.log(data.data);
           setData(data.data);
         } catch (e) {
           console.log(e);
@@ -127,6 +127,7 @@ function SubjectModal({onAddSubject}) {
                   <th>Subject ID</th>
                   <th>Subject Code</th>
                   <th>Subject Description</th>
+                  <th>Subject Type</th>
                   <th>Units</th>
                   <th>Action</th>
                 </tr>

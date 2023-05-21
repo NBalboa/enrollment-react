@@ -7,6 +7,8 @@
     font-family: 'Roboto', sans-serif;
 }
 
+
+
 .student__details {
     /* border: 2px solid black; */
     display: grid;
@@ -84,6 +86,13 @@ form > *:not(:last-child) {
 }
 
 .two_input [type="text"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.two_input select{
     width: 100%;
     padding: 10px;
     border: 1px solid black;
@@ -187,6 +196,14 @@ form > *:not(:last-child) {
     justify-content: flex-end;
 }
 
+.buttons__subject-left {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 12px;
+    margin: 24px auto;
+    gap: 12px;
+}
+
 
 .preview__print {
     width: 8.5in; /* width of bond paper in inches */
@@ -248,6 +265,13 @@ form > *:not(:last-child) {
     margin: 0 auto;
 } */
 
+.ppa-btn {
+    width: 100%;
+    max-width: 820px;
+    margin: 12px auto;
+}
+
+
 @media print {
   .preview__print {
     page-break-after: always; /* add a page break after each div */
@@ -257,6 +281,10 @@ form > *:not(:last-child) {
     display: none;
   }
 
+}
 
-
+.history {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
 }

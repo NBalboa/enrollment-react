@@ -154,6 +154,10 @@
     .student__label--column input {
         padding: 4px 12px;
     }
+    .student__label--column select {
+        padding: 4px 12px;
+
+    }
 
 .required {
     color: red;
@@ -272,10 +276,20 @@
     border-radius: 10px;
 }
 
+
 .red__btn--right:hover {
     opacity: .7;
 }
 
 .display-none {
     display: none;
+}
+
+.btn-gen {
+    margin-left: 4px;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    background-color: red;
+    color: white;
 }
